@@ -1,12 +1,15 @@
 import { HttpClient } from '@angular/common/http';
-import { Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { Recipe } from '../Models/recipe';
+import { MatButtonModule } from '@angular/material/button';
+import { MatCardModule } from '@angular/material/card';
 
 @Component({
   selector: 'app-recipes',
-  imports: [],
+  imports: [MatCardModule, MatButtonModule],
   templateUrl: './recipes.component.html',
   styleUrl: './recipes.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class RecipesComponent {
   http = inject(HttpClient);
