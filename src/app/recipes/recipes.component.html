@@ -1,1 +1,7 @@
 <p>recipes works!</p>
+
+<ul>
+  @for(recipe of recipes; track recipe.id){
+  <li>{{ recipe.title }}</li>
+  }
+</ul>
