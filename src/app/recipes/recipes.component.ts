@@ -3,10 +3,11 @@ import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { Recipe } from '../Models/recipe';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-recipes',
-  imports: [MatCardModule, MatButtonModule],
+  imports: [MatCardModule, MatButtonModule, CommonModule],
   templateUrl: './recipes.component.html',
   styleUrl: './recipes.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,

@@ -1,6 +1,7 @@
-<p>recipes works!</p>
-
-<div>
+<div style="text-align: center" *ngIf="recipes.length < 1">
+  <h2>No task has been created yet!</h2>
+</div>
+<div class="container">
   @for(recipe of recipes; track recipe.id){
   <mat-card class="example-card" appearance="outlined">
     <mat-card-header>
@@ -8,7 +9,7 @@
       <mat-card-title>{{ recipe.title }}</mat-card-title>
       <mat-card-subtitle>Recipe</mat-card-subtitle>
     </mat-card-header>
-    <!-- <img mat-card-image [src]="recipe.thumbnail" alt="Recipe Image" /> -->
+    <img mat-card-image [src]="recipe.thumbnail" alt="Recipe Image" />
     <mat-card-content>
       <p>{{ recipe.instructions }}</p>
     </mat-card-content>
