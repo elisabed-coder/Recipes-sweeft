@@ -15,10 +15,11 @@ import {
   MatDialogTitle,
 } from '@angular/material/dialog';
 import { AddReceipeComponent } from './add-receipe/add-receipe.component';
+import { ReactiveFormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-recipes',
-  imports: [MatCardModule, MatButtonModule, CommonModule],
+  imports: [MatCardModule, MatButtonModule, CommonModule, ReactiveFormsModule],
   templateUrl: './recipes.component.html',
   styleUrl: './recipes.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -63,5 +64,11 @@ export class RecipesComponent {
       this.selectedRecipe = this.recipes.find((recipe) => recipe.id === id);
       this.router.navigate(['edit-recipe', id]);
     }
+  }
+  openCreateRecipeForm(): void {
+    const dialogRef = this.dialog.open(AddReceipeComponent, {
+      width: '400px',
+      disableClose: true,
+    });
   }
 }
