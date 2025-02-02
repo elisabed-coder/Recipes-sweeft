@@ -6,6 +6,15 @@ import { MatCardModule } from '@angular/material/card';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { RecipeService } from '../Services/recipes.service';
+import {
+  MatDialog,
+  MatDialogActions,
+  MatDialogClose,
+  MatDialogContent,
+  MatDialogRef,
+  MatDialogTitle,
+} from '@angular/material/dialog';
+import { AddReceipeComponent } from './add-receipe/add-receipe.component';
 
 @Component({
   selector: 'app-recipes',
@@ -19,7 +28,18 @@ export class RecipesComponent {
   recipes: Recipe[] = [];
   currentRecipeId!: number;
   selectedRecipe: Recipe | undefined;
+  readonly dialog = inject(MatDialog);
 
+  openDialog(
+    enterAnimationDuration: string,
+    exitAnimationDuration: string
+  ): void {
+    this.dialog.open(AddReceipeComponent, {
+      width: '250px',
+      enterAnimationDuration,
+      exitAnimationDuration,
+    });
+  }
   constructor(private router: Router, private recipeService: RecipeService) {}
 
   ngOnInit(): void {
