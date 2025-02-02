@@ -1,11 +1,14 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { Recipe } from '../../Models/recipe';
 import { ActivatedRoute, Router } from '@angular/router';
 import { RecipeService } from '../../Services/recipes.service';
+import { MatButtonModule } from '@angular/material/button';
+import { MatCardModule } from '@angular/material/card';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-edit-recipe',
-  imports: [],
+  imports: [MatCardModule, MatButtonModule, CommonModule],
   templateUrl: './edit-recipe.component.html',
   styleUrl: './edit-recipe.component.scss',
 })

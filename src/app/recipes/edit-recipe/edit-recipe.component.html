@@ -1,1 +1,25 @@
-<p>edit-recipe works!</p>
+<section>
+  <h1>{{ recipe.title }}</h1>
+  <mat-card class="example-card" appearance="outlined">
+    <mat-card-header>
+      <div mat-card-avatar class="example-header-image"></div>
+      <mat-card-title>{{ recipe.title }}</mat-card-title>
+      <mat-card-subtitle>Recipe</mat-card-subtitle>
+    </mat-card-header>
+    <img mat-card-image [src]="recipe.thumbnail" [alt]="recipe.title" />
+    <mat-card-content>
+      <h3>Ingredients:</h3>
+      <ul>
+        <li *ngFor="let ingredient of recipe.ingredients">
+          {{ ingredient }}
+        </li>
+      </ul>
+      <h3>Instructions:</h3>
+      <p>{{ recipe.instructions }}</p>
+    </mat-card-content>
+    <mat-card-actions>
+      <button mat-button>LIKE</button>
+      <button mat-button>SHARE</button>
+    </mat-card-actions>
+  </mat-card>
+</section>
