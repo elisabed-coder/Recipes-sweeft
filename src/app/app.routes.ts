@@ -5,5 +5,5 @@ import { EditRecipeComponent } from './recipes/edit-recipe/edit-recipe.component
 export const routes: Routes = [
   { path: '', redirectTo: 'recipe', pathMatch: 'full' },
   { path: 'recipe', component: RecipesComponent },
-  { path: 'editRecipe', component: EditRecipeComponent },
+  { path: 'edit-recipe/:id', component: EditRecipeComponent },
 ];

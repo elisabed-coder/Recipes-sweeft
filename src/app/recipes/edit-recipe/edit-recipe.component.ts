@@ -10,7 +10,7 @@ import { RecipeService } from '../../Services/recipes.service';
   styleUrl: './edit-recipe.component.scss',
 })
 export class EditRecipeComponent {
-  recipeId!: number;
+  recipeId!: number | null;
   recipe!: Recipe;
 
   constructor(
@@ -21,7 +21,7 @@ export class EditRecipeComponent {
 
   ngOnInit(): void {
     this.route.paramMap.subscribe((params) => {
-      this.recipeId = params.get('id');
+      this.recipeId = params.get('id') ? +params.get('id')! : null; // convert to number
       console.log('Editing Recipe ID:', this.recipeId); // Debugging purpose
       if (this.recipeId) {
         this.RecipeService.getRecipeById(this.recipeId).subscribe((recipe) => {

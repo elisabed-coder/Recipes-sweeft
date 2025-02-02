@@ -40,10 +40,8 @@ export class RecipesComponent {
     if (id) {
       this.currentRecipeId = id;
 
-      this.selectedRecipe = this.recipes.find((recipe) => {
-        recipe.id === id;
-      });
-      this.router.navigate(['editRecipe', id]);
+      this.selectedRecipe = this.recipes.find((recipe) => recipe.id === id);
+      this.router.navigate(['edit-recipe', id]);
     }
   }
 }
