@@ -4,6 +4,8 @@ import { Recipe } from '../Models/recipe';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { CommonModule } from '@angular/common';
+import { Router } from '@angular/router';
+import { RecipeService } from '../Services/recipes.service';
 
 @Component({
   selector: 'app-recipes',
@@ -15,17 +17,33 @@ import { CommonModule } from '@angular/common';
 export class RecipesComponent {
   http = inject(HttpClient);
   recipes: Recipe[] = [];
+  currentRecipeId!: number;
+  selectedRecipe: Recipe | undefined;
 
-  private apiUrl = 'http://localhost:3001/recipes';
+  constructor(private router: Router, private recipeService: RecipeService) {}
 
-  constructor() {
-    this.getRecipes().subscribe((data: Recipe[]) => {
-      console.log(data);
-      this.recipes = data;
+  ngOnInit(): void {
+    this.fetchRecipes();
+  }
+
+  fetchRecipes() {
+    this.recipeService.getRecipes().subscribe({
+      next: (recipes) => {
+        this.recipes = recipes;
+        console.log(recipes);
+      },
+      error: (err) => console.error('Error:', err),
     });
   }
 
-  getRecipes() {
-    return this.http.get<Recipe[]>(`${this.apiUrl}`);
+  EditRecipe(id: number | undefined) {
+    if (id) {
+      this.currentRecipeId = id;
+
+      this.selectedRecipe = this.recipes.find((recipe) => {
+        recipe.id === id;
+      });
+      this.router.navigate(['editRecipe', id]);
+    }
   }
 }
