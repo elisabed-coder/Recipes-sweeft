@@ -142,14 +142,24 @@
       "instructions": "Blend all ingredients until smooth. Serve chilled."
     },
     {
-      "id": "bdf5",
-      "title": "656",
-      "thumbnail": "csac",
-      "instructions": "boil",
+      "id": "f23c",
+      "title": "bewqewqdasdasd",
+      "instructions": "asdasd",
       "ingredients": [
-        "potato",
         "tomato"
-      ]
+      ],
+      "thumbnail": "https://example.com/path/to/uploaded/image.jpg"
+    },
+    {
+      "id": "5ddd",
+      "title": "bewqewq",
+      "instructions": "nkjnkjk",
+      "ingredients": [
+        "tomato",
+        "werwer",
+        "hbk"
+      ],
+      "thumbnail": "http://localhost:3001/uploads/e5af490c-15cf-44e3-9d5f-649955f48fdd.jpg"
     }
   ]
 }

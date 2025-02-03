@@ -7,7 +7,7 @@ import { Recipe } from '../Models/recipe';
   providedIn: 'root',
 })
 export class RecipeService {
-  private apiUrl = 'http://localhost:3001/recipes';
+  private apiUrl = 'http://localhost:3000/recipes';
 
   constructor(private http: HttpClient) {}
 
@@ -19,7 +19,7 @@ export class RecipeService {
     return this.http.get<Recipe>(`${this.apiUrl}/${id}`);
   }
 
-  createNewRecipe(recipe: Recipe): Observable<Recipe> {
-    return this.http.post<Recipe>(`${this.apiUrl}`, recipe);
+  createNewRecipe(recipeData: any): Observable<any> {
+    return this.http.post('http://localhost:3000/recipes', recipeData);
   }
 }
