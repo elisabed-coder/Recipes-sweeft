@@ -6,14 +6,7 @@ import { MatCardModule } from '@angular/material/card';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { RecipeService } from '../Services/recipes.service';
-import {
-  MatDialog,
-  MatDialogActions,
-  MatDialogClose,
-  MatDialogContent,
-  MatDialogRef,
-  MatDialogTitle,
-} from '@angular/material/dialog';
+import { MatDialog } from '@angular/material/dialog';
 import { AddReceipeComponent } from './add-receipe/add-receipe.component';
 import { ReactiveFormsModule } from '@angular/forms';
 
@@ -27,7 +20,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 export class RecipesComponent {
   http = inject(HttpClient);
   recipes: Recipe[] = [];
-  currentRecipeId!: number;
+  currentRecipeId!: string;
   selectedRecipe: Recipe | undefined;
   readonly dialog = inject(MatDialog);
 
@@ -57,7 +50,7 @@ export class RecipesComponent {
     });
   }
 
-  EditRecipe(id: number | undefined) {
+  EditRecipe(id: string | undefined) {
     if (id) {
       this.currentRecipeId = id;
 

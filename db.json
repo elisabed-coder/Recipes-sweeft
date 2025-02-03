@@ -1,164 +1,17 @@
 {
   "recipes": [
     {
-      "id": "1",
-      "title": "Spaghetti Carbonara",
-      "description": "Classic Italian pasta dish with eggs, cheese, pancetta, and pepper.",
-      "thumbnail": "https://images.services.kitchenstories.io/z_bWPIhhM6qs38B0E46CRaYs81Q=/3840x0/filters:quality(85)/images.kitchenstories.io/wagtailOriginalImages/R2568-photo-final-_0.jpg",
-      "ingredients": [
-        "Spaghetti",
-        "Eggs",
-        "Pancetta",
-        "Parmesan cheese",
-        "Black pepper"
-      ],
-      "instructions": "Boil pasta. Cook pancetta. Mix eggs and cheese. Combine everything."
-    },
-    {
-      "id": "2",
-      "title": "Chicken Curry",
-      "description": "Spicy and flavorful chicken curry with coconut milk.",
-      "thumbnail": "https://images.services.kitchenstories.io/z_bWPIhhM6qs38B0E46CRaYs81Q=/3840x0/filters:quality(85)/images.kitchenstories.io/wagtailOriginalImages/R2568-photo-final-_0.jpg",
-      "ingredients": [
-        "Chicken",
-        "Coconut milk",
-        "Curry powder",
-        "Onion",
-        "Garlic",
-        "Ginger"
-      ],
-      "instructions": "Sauté onions, garlic, and ginger. Add chicken and curry powder. Pour coconut milk and simmer."
-    },
-    {
-      "id": "3",
-      "title": "Avocado Toast",
-      "description": "Healthy and delicious toast with mashed avocado.",
-      "thumbnail": "https://images.services.kitchenstories.io/z_bWPIhhM6qs38B0E46CRaYs81Q=/3840x0/filters:quality(85)/images.kitchenstories.io/wagtailOriginalImages/R2568-photo-final-_0.jpg",
-      "ingredients": [
-        "Bread",
-        "Avocado",
-        "Salt",
-        "Pepper",
-        "Lemon juice"
-      ],
-      "instructions": "Toast bread. Mash avocado with salt, pepper, and lemon juice. Spread on toast."
-    },
-    {
-      "id": "4",
-      "title": "Chocolate Brownies",
-      "description": "Rich and fudgy homemade brownies.",
-      "thumbnail": "https://images.services.kitchenstories.io/z_bWPIhhM6qs38B0E46CRaYs81Q=/3840x0/filters:quality(85)/images.kitchenstories.io/wagtailOriginalImages/R2568-photo-final-_0.jpg",
-      "ingredients": [
-        "Butter",
-        "Sugar",
-        "Cocoa powder",
-        "Eggs",
-        "Flour"
-      ],
-      "instructions": "Mix butter, sugar, and cocoa powder. Add eggs and flour. Bake."
-    },
-    {
-      "id": "5",
-      "title": "Caesar Salad",
-      "description": "Crisp romaine lettuce with Caesar dressing and croutons.",
-      "thumbnail": "https://images.services.kitchenstories.io/z_bWPIhhM6qs38B0E46CRaYs81Q=/3840x0/filters:quality(85)/images.kitchenstories.io/wagtailOriginalImages/R2568-photo-final-_0.jpg",
-      "ingredients": [
-        "Romaine lettuce",
-        "Caesar dressing",
-        "Croutons",
-        "Parmesan cheese",
-        "Chicken (optional)"
-      ],
-      "instructions": "Chop lettuce. Add dressing, croutons, and cheese. Toss."
-    },
-    {
-      "id": "6",
-      "title": "Vegetable Stir Fry",
-      "description": "Quick and healthy stir-fried vegetables with soy sauce.",
-      "thumbnail": "https://images.services.kitchenstories.io/z_bWPIhhM6qs38B0E46CRaYs81Q=/3840x0/filters:quality(85)/images.kitchenstories.io/wagtailOriginalImages/R2568-photo-final-_0.jpg",
-      "ingredients": [
-        "Broccoli",
-        "Carrot",
-        "Bell pepper",
-        "Soy sauce",
-        "Garlic"
-      ],
-      "instructions": "Stir-fry vegetables with garlic. Add soy sauce. Serve hot."
-    },
-    {
-      "id": "7",
-      "title": "Pancakes",
-      "description": "Fluffy homemade pancakes with syrup.",
-      "thumbnail": "https://images.services.kitchenstories.io/z_bWPIhhM6qs38B0E46CRaYs81Q=/3840x0/filters:quality(85)/images.kitchenstories.io/wagtailOriginalImages/R2568-photo-final-_0.jpg",
-      "ingredients": [
-        "Flour",
-        "Milk",
-        "Eggs",
-        "Sugar",
-        "Baking powder"
-      ],
-      "instructions": "Mix ingredients. Cook on a hot griddle. Serve with syrup."
-    },
-    {
-      "id": "8",
-      "title": "Tomato Soup",
-      "description": "Comforting tomato soup with basil.",
-      "thumbnail": "https://images.services.kitchenstories.io/z_bWPIhhM6qs38B0E46CRaYs81Q=/3840x0/filters:quality(85)/images.kitchenstories.io/wagtailOriginalImages/R2568-photo-final-_0.jpg",
-      "ingredients": [
-        "Tomatoes",
-        "Onion",
-        "Garlic",
-        "Basil",
-        "Cream"
-      ],
-      "instructions": "Sauté onions and garlic. Add tomatoes and basil. Blend and simmer."
-    },
-    {
-      "id": "9",
-      "title": "Garlic Butter Shrimp",
-      "description": "Juicy shrimp cooked in garlic butter sauce.",
-      "thumbnail": "https://images.services.kitchenstories.io/z_bWPIhhM6qs38B0E46CRaYs81Q=/3840x0/filters:quality(85)/images.kitchenstories.io/wagtailOriginalImages/R2568-photo-final-_0.jpg",
-      "ingredients": [
-        "Shrimp",
-        "Garlic",
-        "Butter",
-        "Lemon juice",
-        "Parsley"
-      ],
-      "instructions": "Sauté garlic in butter. Add shrimp and cook. Finish with lemon juice."
-    },
-    {
-      "id": "10",
-      "title": "Mango Smoothie",
-      "description": "Refreshing mango smoothie with yogurt.",
-      "thumbnail": "https://images.services.kitchenstories.io/z_bWPIhhM6qs38B0E46CRaYs81Q=/3840x0/filters:quality(85)/images.kitchenstories.io/wagtailOriginalImages/R2568-photo-final-_0.jpg",
-      "ingredients": [
-        "Mango",
-        "Yogurt",
-        "Honey",
-        "Milk",
-        "Ice cubes"
-      ],
-      "instructions": "Blend all ingredients until smooth. Serve chilled."
-    },
-    {
       "id": "f23c",
       "title": "bewqewqdasdasd",
       "instructions": "asdasd",
-      "ingredients": [
-        "tomato"
-      ],
-      "thumbnail": "https://example.com/path/to/uploaded/image.jpg"
+      "ingredients": ["tomato"],
+      "thumbnail": "http://foodwhirl.com/wp-content/uploads/2017/02/spaghetti-carbonara-insta.jpg"
     },
     {
       "id": "5ddd",
       "title": "bewqewq",
       "instructions": "nkjnkjk",
-      "ingredients": [
-        "tomato",
-        "werwer",
-        "hbk"
-      ],
+      "ingredients": ["tomato", "werwer", "hbk"],
       "thumbnail": "http://localhost:3001/uploads/e5af490c-15cf-44e3-9d5f-649955f48fdd.jpg"
     }
   ]

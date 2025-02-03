@@ -13,18 +13,17 @@ import { CommonModule } from '@angular/common';
   styleUrl: './edit-recipe.component.scss',
 })
 export class EditRecipeComponent {
-  recipeId!: number | null;
+  recipeId!: string | null;
   recipe!: Recipe;
 
   constructor(
     private route: ActivatedRoute,
-    private RecipeService: RecipeService,
-    private router: Router
+    private RecipeService: RecipeService
   ) {}
 
   ngOnInit(): void {
     this.route.paramMap.subscribe((params) => {
-      this.recipeId = params.get('id') ? +params.get('id')! : null; // convert to number
+      this.recipeId = params.get('id');
       console.log('Editing Recipe ID:', this.recipeId); // Debugging purpose
       if (this.recipeId) {
         this.RecipeService.getRecipeById(this.recipeId).subscribe((recipe) => {
