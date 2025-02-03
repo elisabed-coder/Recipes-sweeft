@@ -7,12 +7,12 @@ import { MatCardModule } from '@angular/material/card';
 import { CommonModule } from '@angular/common';
 
 @Component({
-  selector: 'app-edit-recipe',
+  selector: 'app-recipe-details',
   imports: [MatCardModule, MatButtonModule, CommonModule],
-  templateUrl: './edit-recipe.component.html',
-  styleUrl: './edit-recipe.component.scss',
+  templateUrl: './recipe-details.component.html',
+  styleUrl: './recipe-details.component.scss',
 })
-export class EditRecipeComponent {
+export class RecipeDetailsComponent {
   recipeId!: string | null;
   recipe!: Recipe;
 
