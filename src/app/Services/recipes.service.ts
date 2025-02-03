@@ -20,6 +20,10 @@ export class RecipeService {
   }
 
   createNewRecipe(recipeData: Recipe): Observable<Recipe> {
-    return this.http.post<Recipe>('http://localhost:3000/recipes', recipeData);
+    return this.http.post<Recipe>(`${this.apiUrl}`, recipeData);
+  }
+
+  deleteRecipeById(recipeId: string): Observable<Recipe> {
+    return this.http.delete<Recipe>(`${this.apiUrl}/${recipeId}`);
   }
 }

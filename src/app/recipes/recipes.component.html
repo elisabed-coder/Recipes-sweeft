@@ -11,11 +11,7 @@
 
 <div class="container">
   @for(recipe of recipes; track recipe.id){
-  <mat-card
-    class="example-card"
-    appearance="outlined"
-    (click)="EditRecipe(recipe.id)"
-  >
+  <mat-card class="example-card" appearance="outlined">
     <mat-card-header>
       <div mat-card-avatar class="example-header-image"></div>
       <mat-card-title>{{ recipe.title }}</mat-card-title>
@@ -33,6 +29,8 @@
     </mat-card-content>
     <mat-card-actions>
       <button mat-button>LIKE</button>
+      <button mat-button (click)="EditRecipe(recipe.id)">EDIT</button>
+      <button mat-button (click)="DeleteRecipe(recipe.id)">DELETE</button>
     </mat-card-actions>
   </mat-card>
   }

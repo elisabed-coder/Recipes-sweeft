@@ -59,4 +59,18 @@ export class RecipesComponent {
       exitAnimationDuration,
     });
   }
+
+  DeleteRecipe(id: string | undefined) {
+    if (id) {
+      this.recipeService.deleteRecipeById(id).subscribe({
+        next: () => {
+          console.log('Recipe Deleted Successfully');
+          this.fetchRecipes();
+        },
+        error: (error) => {
+          console.log(error);
+        },
+      });
+    }
+  }
 }
