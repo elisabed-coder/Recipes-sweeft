@@ -7,6 +7,7 @@ import {
   ReactiveFormsModule,
   FormsModule,
   FormArray,
+  AbstractControl,
 } from '@angular/forms';
 import {
   MatDialogRef,
@@ -20,6 +21,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { RecipeService } from '../../Services/recipes.service';
 import { ImageService } from '../../Services/image.service';
 import { ImageSnippet } from '../../Models/ImageSnipper';
+import { FormValidationService } from '../../Services/formValidation.service';
 
 @Component({
   selector: 'app-add-receipe',
@@ -46,13 +48,28 @@ export class AddReceipeComponent {
     private fb: FormBuilder,
     private recipeService: RecipeService,
     private imageService: ImageService,
+    private formValidationService: FormValidationService,
     public dialogRef: MatDialogRef<AddReceipeComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {
     this.recipeForm = this.fb.group({
-      title: ['', Validators.required],
+      title: [
+        '',
+        [
+          Validators.required,
+          Validators.minLength(3),
+          Validators.maxLength(100),
+        ],
+      ],
       thumbnail: [''],
-      instructions: ['', Validators.required],
+      instructions: [
+        '',
+        [
+          Validators.required,
+          Validators.minLength(10),
+          Validators.maxLength(1000),
+        ],
+      ],
       ingredients: this.fb.array([]),
     });
     this.addIngredient();
@@ -63,7 +80,12 @@ export class AddReceipeComponent {
   }
 
   addIngredient() {
-    this.ingredients.push(this.fb.control('', Validators.required));
+    const ingredientControl = this.fb.control('', [
+      Validators.required,
+      Validators.minLength(2),
+      Validators.maxLength(100),
+    ]);
+    this.ingredients.push(ingredientControl);
   }
 
   removeIngredient(index: number) {
@@ -72,39 +94,45 @@ export class AddReceipeComponent {
     }
   }
 
+  // Form Validation Error Methods
+  getErrorMessage(control: AbstractControl | null): string {
+    return this.formValidationService.getErrorMessage(control);
+  }
+
   submitForm() {
-    if (this.recipeForm.valid && this.selectedFile) {
-      // Upload the image first
-      this.imageService.uploadImage(this.selectedFile.file).subscribe({
-        next: (imageResponse) => {
-          const imageUrl = imageResponse.imageUrl;
-
-          // Create the recipe with the image URL
-          const recipeData = {
-            title: this.recipeForm.get('title')?.value,
-            instructions: this.recipeForm.get('instructions')?.value,
-            ingredients: (
-              this.recipeForm.get('ingredients') as FormArray
-            ).controls
-              .map((control) => control.value)
-              .filter((ing) => ing.trim() !== ''), // Filter out empty ingredients
-            thumbnail: imageUrl,
-          };
-
-          // Send the recipe data to JSON Server
-          this.recipeService.createNewRecipe(recipeData).subscribe({
-            next: (newRecipe) => {
-              console.log('Recipe created:', newRecipe);
-              this.dialogRef.close(newRecipe);
-            },
-            error: (err) => console.error('Error creating recipe:', err),
-          });
-        },
-        error: (err) => console.error('Error uploading image:', err),
-      });
-    } else {
-      console.error('Form is invalid or no image selected');
+    if (this.recipeForm.invalid) {
+      this.formValidationService.markFormGroupTouched(this.recipeForm);
+      return;
     }
+
+    if (!this.selectedFile) {
+      // Handle no image selected scenario
+      return;
+    }
+
+    this.imageService.uploadImage(this.selectedFile.file).subscribe({
+      next: (imageResponse) => {
+        const recipeData = {
+          title: this.recipeForm.get('title')?.value,
+          instructions: this.recipeForm.get('instructions')?.value,
+          ingredients: (
+            this.recipeForm.get('ingredients') as FormArray
+          ).controls
+            .map((control) => control.value)
+            .filter((ing) => ing.trim() !== ''),
+          thumbnail: imageResponse.imageUrl,
+        };
+
+        this.recipeService.createNewRecipe(recipeData).subscribe({
+          next: (newRecipe) => {
+            console.log('Recipe created:', newRecipe);
+            this.dialogRef.close(newRecipe);
+          },
+          error: (err) => console.error('Error creating recipe:', err),
+        });
+      },
+      error: (err) => console.error('Error uploading image:', err),
+    });
   }
 
   processFile(imageInput: any) {
@@ -113,7 +141,6 @@ export class AddReceipeComponent {
 
     reader.addEventListener('load', (event: any) => {
       this.selectedFile = new ImageSnippet(event.target.result, file);
-
       this.imageService.uploadImage(this.selectedFile.file).subscribe(
         (res) => {},
         (err) => {}

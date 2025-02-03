@@ -55,7 +55,6 @@ export class RecipesComponent {
     exitAnimationDuration: string
   ): void {
     this.dialog.open(AddReceipeComponent, {
-      width: '250px',
       enterAnimationDuration,
       exitAnimationDuration,
     });

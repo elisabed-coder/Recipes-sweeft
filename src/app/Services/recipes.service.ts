@@ -19,7 +19,7 @@ export class RecipeService {
     return this.http.get<Recipe>(`${this.apiUrl}/${id}`);
   }
 
-  createNewRecipe(recipeData: any): Observable<any> {
-    return this.http.post('http://localhost:3000/recipes', recipeData);
+  createNewRecipe(recipeData: Recipe): Observable<Recipe> {
+    return this.http.post<Recipe>('http://localhost:3000/recipes', recipeData);
   }
 }
