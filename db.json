@@ -4,14 +4,40 @@
       "id": "f23c",
       "title": "bewqewqdasdasd",
       "instructions": "asdasd",
-      "ingredients": ["tomato"],
+      "ingredients": [
+        "tomato"
+      ],
       "thumbnail": "http://foodwhirl.com/wp-content/uploads/2017/02/spaghetti-carbonara-insta.jpg"
     },
     {
       "id": "5ddd",
       "title": "bewqewq",
       "instructions": "nkjnkjk",
-      "ingredients": ["tomato", "werwer", "hbk"],
+      "ingredients": [
+        "tomato",
+        "werwer",
+        "hbk"
+      ],
+      "thumbnail": "http://localhost:3001/uploads/e5af490c-15cf-44e3-9d5f-649955f48fdd.jpg"
+    },
+    {
+      "id": "8469",
+      "title": "bewqewq",
+      "instructions": "lkml;.",
+      "ingredients": [
+        "tomato",
+        "knm"
+      ],
+      "thumbnail": "http://localhost:3001/uploads/e5af490c-15cf-44e3-9d5f-649955f48fdd.jpg"
+    },
+    {
+      "id": "fb81",
+      "title": "bewqewq",
+      "instructions": "pizza",
+      "ingredients": [
+        "tomato",
+        "potaato"
+      ],
       "thumbnail": "http://localhost:3001/uploads/e5af490c-15cf-44e3-9d5f-649955f48fdd.jpg"
     }
   ]
