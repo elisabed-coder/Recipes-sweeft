@@ -19,21 +19,12 @@ import { ReactiveFormsModule } from '@angular/forms';
 })
 export class RecipesComponent {
   http = inject(HttpClient);
+  readonly dialog = inject(MatDialog);
+
   recipes: Recipe[] = [];
   currentRecipeId!: string;
   selectedRecipe: Recipe | undefined;
-  readonly dialog = inject(MatDialog);
 
-  openDialog(
-    enterAnimationDuration: string,
-    exitAnimationDuration: string
-  ): void {
-    this.dialog.open(AddReceipeComponent, {
-      width: '250px',
-      enterAnimationDuration,
-      exitAnimationDuration,
-    });
-  }
   constructor(private router: Router, private recipeService: RecipeService) {}
 
   ngOnInit(): void {
@@ -58,10 +49,15 @@ export class RecipesComponent {
       this.router.navigate(['edit-recipe', id]);
     }
   }
-  openCreateRecipeForm(): void {
-    const dialogRef = this.dialog.open(AddReceipeComponent, {
-      width: '400px',
-      disableClose: true,
+
+  openDialog(
+    enterAnimationDuration: string,
+    exitAnimationDuration: string
+  ): void {
+    this.dialog.open(AddReceipeComponent, {
+      width: '250px',
+      enterAnimationDuration,
+      exitAnimationDuration,
     });
   }
 }

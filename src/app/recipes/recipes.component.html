@@ -1,11 +1,11 @@
 <div style="text-align: center" *ngIf="recipes.length < 1">
   <h2>No recipes has been created yet!</h2>
 </div>
-<button mat-raised-button (click)="openCreateRecipeForm()">
+<button mat-raised-button (click)="openDialog('300ms', '150ms')">
   Add New Recipe
 </button>
 
-<button mat-raised-button (click)="openDialog('3000ms', '1500ms')">
+<button mat-raised-button (click)="openDialog('300ms', '150ms')">
   Open dialog slowly
 </button>
 
