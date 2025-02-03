@@ -9,6 +9,7 @@ import { RecipeService } from '../Services/recipes.service';
 import { MatDialog } from '@angular/material/dialog';
 import { AddReceipeComponent } from './add-receipe/add-receipe.component';
 import { ReactiveFormsModule } from '@angular/forms';
+import { ConfirmDeleteComponent } from '../utility/confirm-delete/confirm-delete.component';
 
 @Component({
   selector: 'app-recipes',
@@ -62,14 +63,18 @@ export class RecipesComponent {
 
   DeleteRecipe(id: string | undefined) {
     if (id) {
-      this.recipeService.deleteRecipeById(id).subscribe({
-        next: () => {
-          console.log('Recipe Deleted Successfully');
-          this.fetchRecipes();
-        },
-        error: (error) => {
-          console.log(error);
-        },
+      const dialogRef = this.dialog.open(ConfirmDeleteComponent);
+
+      dialogRef.afterClosed().subscribe((confirmed) => {
+        if (confirmed) {
+          this.recipeService.deleteRecipeById(id).subscribe({
+            next: () => {
+              console.log('Recipe Deleted Successfully');
+              this.fetchRecipes();
+            },
+            error: (error) => console.log(error),
+          });
+        }
       });
     }
   }

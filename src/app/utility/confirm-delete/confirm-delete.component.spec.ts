@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { OpenDialogComponent } from './open-dialog.component';
+import { ConfirmDeleteComponent } from './confirm-delete.component';
 
-describe('OpenDialogComponent', () => {
-  let component: OpenDialogComponent;
-  let fixture: ComponentFixture<OpenDialogComponent>;
+describe('ConfirmDeleteComponent', () => {
+  let component: ConfirmDeleteComponent;
+  let fixture: ComponentFixture<ConfirmDeleteComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [OpenDialogComponent]
+      imports: [ConfirmDeleteComponent]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(OpenDialogComponent);
+    fixture = TestBed.createComponent(ConfirmDeleteComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

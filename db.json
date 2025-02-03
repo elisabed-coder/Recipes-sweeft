@@ -1,27 +1,9 @@
 {
   "recipes": [
     {
-      "id": "c9e7",
-      "title": "bewqewq",
-      "instructions": "sda",
-      "ingredients": [
-        "tomato"
-      ],
-      "thumbnail": "http://localhost:3001/uploads/455aa205-43c1-4131-aa82-a13c1751a3a4.jpg"
-    },
-    {
       "id": "e4c2",
       "title": "adsadsad",
       "instructions": "adsadknlmlkm",
-      "ingredients": [
-        "asdasd"
-      ],
-      "thumbnail": "http://localhost:3001/uploads/455aa205-43c1-4131-aa82-a13c1751a3a4.jpg"
-    },
-    {
-      "id": "f838",
-      "title": "adsadsad",
-      "instructions": "sadasdsadasd",
       "ingredients": [
         "asdasd"
       ],
