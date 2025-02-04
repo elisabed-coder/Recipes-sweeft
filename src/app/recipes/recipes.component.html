@@ -1,7 +1,18 @@
+<app-add-receipe
+  *ngIf="showCreateRecipeForm"
+  (EmitTaskData)="CreateOrUpdateRecipe($event)"
+  (cancel)="onCancel()"
+  [isEditMode]="editMode"
+  [selectedRecipe]="selectedRecipe"
+></app-add-receipe>
+
 <div style="text-align: center" *ngIf="recipes.length < 1">
   <h2>No recipes has been created yet!</h2>
 </div>
-<button mat-raised-button (click)="openDialog('300ms', '150ms')">
+<button
+  mat-raised-button
+  (click)="showCreateRecipeForm = true; editMode = false"
+>
   Add New Recipe
 </button>
 <div class="container">
@@ -28,7 +39,7 @@
         SEE DETAIlS
       </button>
       <button mat-button (click)="DeleteRecipe(recipe.id)">DELETE</button>
-      <button mat-button (click)="editRecipe(recipe.id)">EDIT</button>
+      <button mat-button (click)="OnEditRecipeClicked(recipe.id)">EDIT</button>
     </mat-card-actions>
   </mat-card>
   }

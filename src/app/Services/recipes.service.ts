@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, BehaviorSubject } from 'rxjs';
+import { Observable, BehaviorSubject, catchError } from 'rxjs';
 import { Recipe } from '../Models/recipe';
 
 @Injectable({
@@ -25,5 +25,9 @@ export class RecipeService {
 
   deleteRecipeById(recipeId: string): Observable<Recipe> {
     return this.http.delete<Recipe>(`${this.apiUrl}/${recipeId}`);
+  }
+
+  UpdateRecipe(id: string, data: Recipe) {
+    return this.http.put(`${this.apiUrl}+${id}+'.json`, data);
   }
 }

@@ -1,4 +1,4 @@
-import { Component, Inject } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {
   FormBuilder,
@@ -9,11 +9,6 @@ import {
   FormArray,
   AbstractControl,
 } from '@angular/forms';
-import {
-  MatDialogRef,
-  MAT_DIALOG_DATA,
-  MatDialogModule,
-} from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -22,6 +17,7 @@ import { RecipeService } from '../../Services/recipes.service';
 import { ImageService } from '../../Services/image.service';
 import { ImageSnippet } from '../../Models/ImageSnipper';
 import { FormValidationService } from '../../Services/formValidation.service';
+import { Recipe } from '../../Models/recipe';
 
 @Component({
   selector: 'app-add-receipe',
@@ -33,7 +29,6 @@ import { FormValidationService } from '../../Services/formValidation.service';
     MatButtonModule,
     MatFormFieldModule,
     MatInputModule,
-    MatDialogModule,
     MatIconModule,
   ],
   providers: [FormBuilder],
@@ -43,15 +38,17 @@ import { FormValidationService } from '../../Services/formValidation.service';
 export class AddReceipeComponent {
   recipeForm: FormGroup;
   selectedFile!: ImageSnippet;
-  isEditMode: boolean = false;
+
+  @Input() isEditMode: boolean = false;
+  @Input() selectedRecipe!: Recipe;
+  @Output() EmitTaskData = new EventEmitter<Recipe>();
+  @Output() cancel = new EventEmitter<void>();
 
   constructor(
     private fb: FormBuilder,
     private recipeService: RecipeService,
     private imageService: ImageService,
-    private formValidationService: FormValidationService,
-    public dialogRef: MatDialogRef<AddReceipeComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: any
+    private formValidationService: FormValidationService
   ) {
     this.recipeForm = this.fb.group({
       title: [
@@ -76,17 +73,37 @@ export class AddReceipeComponent {
     this.addIngredient();
   }
 
+  ngOnInit() {
+    if (this.isEditMode && this.selectedRecipe) {
+      this.recipeForm.patchValue({
+        title: this.selectedRecipe.title,
+        instructions: this.selectedRecipe.instructions,
+      });
+      this.selectedRecipe.ingredients.forEach((ingredient: string) => {
+        this.ingredients.push(
+          this.fb.control(ingredient, [
+            Validators.required,
+            Validators.minLength(2),
+          ])
+        );
+      });
+    } else {
+      this.addIngredient();
+    }
+  }
+
   get ingredients() {
     return this.recipeForm.get('ingredients') as FormArray;
   }
 
   addIngredient() {
-    const ingredientControl = this.fb.control('', [
-      Validators.required,
-      Validators.minLength(2),
-      Validators.maxLength(100),
-    ]);
-    this.ingredients.push(ingredientControl);
+    this.ingredients.push(
+      this.fb.control('', [
+        Validators.required,
+        Validators.minLength(2),
+        Validators.maxLength(100),
+      ])
+    );
   }
 
   removeIngredient(index: number) {
@@ -95,7 +112,6 @@ export class AddReceipeComponent {
     }
   }
 
-  // Form Validation Error Methods
   getErrorMessage(control: AbstractControl | null): string {
     return this.formValidationService.getErrorMessage(control);
   }
@@ -113,12 +129,10 @@ export class AddReceipeComponent {
 
     this.imageService.uploadImage(this.selectedFile.file).subscribe({
       next: (imageResponse) => {
-        const recipeData = {
+        const recipeData: Recipe = {
           title: this.recipeForm.get('title')?.value,
           instructions: this.recipeForm.get('instructions')?.value,
-          ingredients: (
-            this.recipeForm.get('ingredients') as FormArray
-          ).controls
+          ingredients: this.ingredients.controls
             .map((control) => control.value)
             .filter((ing) => ing.trim() !== ''),
           thumbnail: imageResponse.imageUrl,
@@ -127,7 +141,8 @@ export class AddReceipeComponent {
         this.recipeService.createNewRecipe(recipeData).subscribe({
           next: (newRecipe) => {
             console.log('Recipe created:', newRecipe);
-            this.dialogRef.close(newRecipe);
+            this.EmitTaskData.emit(newRecipe); // Emit the created recipe
+            this.recipeForm.reset(); // Reset form after submission
           },
           error: (err) => console.error('Error creating recipe:', err),
         });
@@ -149,5 +164,9 @@ export class AddReceipeComponent {
     });
 
     reader.readAsDataURL(file);
+  }
+
+  onCancel() {
+    this.cancel.emit();
   }
 }

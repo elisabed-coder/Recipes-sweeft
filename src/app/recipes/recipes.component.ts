@@ -11,27 +11,43 @@ import { MatCardModule } from '@angular/material/card';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { RecipeService } from '../Services/recipes.service';
-import { MatDialog } from '@angular/material/dialog';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { AddReceipeComponent } from './add-receipe/add-receipe.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { ConfirmDeleteComponent } from '../utility/confirm-delete/confirm-delete.component';
 
 @Component({
   selector: 'app-recipes',
-  imports: [MatCardModule, MatButtonModule, CommonModule, ReactiveFormsModule],
+  imports: [
+    MatCardModule,
+    MatButtonModule,
+    CommonModule,
+    ReactiveFormsModule,
+    MatDialogModule,
+    AddReceipeComponent,
+  ],
   templateUrl: './recipes.component.html',
   styleUrl: './recipes.component.scss',
 })
 export class RecipesComponent {
+  recipes: Recipe[] = [];
+
   http = inject(HttpClient);
   readonly dialog = inject(MatDialog);
-  private cdr = inject(ChangeDetectorRef);
 
-  recipes: Recipe[] = [];
   currentRecipeId!: string;
-  selectedRecipe: Recipe | undefined;
+  selectedRecipe!: Recipe;
+  showCreateRecipeForm: boolean = false;
 
-  constructor(private router: Router, private recipeService: RecipeService) {}
+  isLoading: boolean = false;
+
+  editMode: boolean = false;
+
+  constructor(
+    private router: Router,
+    private recipeService: RecipeService,
+    private cdr: ChangeDetectorRef
+  ) {}
 
   ngOnInit(): void {
     this.fetchRecipes();
@@ -51,19 +67,10 @@ export class RecipesComponent {
     if (id) {
       this.currentRecipeId = id;
 
-      this.selectedRecipe = this.recipes.find((recipe) => recipe.id === id);
+      this.selectedRecipe =
+        this.recipes.find((recipe) => recipe.id === id) ?? ({} as Recipe);
       this.router.navigate(['recipe', id]);
     }
-  }
-
-  openDialog(
-    enterAnimationDuration: string,
-    exitAnimationDuration: string
-  ): void {
-    this.dialog.open(AddReceipeComponent, {
-      enterAnimationDuration,
-      exitAnimationDuration,
-    });
   }
 
   DeleteRecipe(id: string | undefined) {
@@ -78,7 +85,7 @@ export class RecipesComponent {
               this.recipes = [
                 ...this.recipes.filter((recipe) => recipe.id !== id),
               ]; // Assign a new reference
-              this.cdr.markForCheck();
+              // this.cdr.markForCheck();
             },
             error: (error) => console.log(error),
           });
@@ -87,17 +94,23 @@ export class RecipesComponent {
     }
   }
 
-  editRecipe(recipeId: string | undefined) {
-    const selectedRecipe = this.recipes.find(
-      (recipe) => recipe.id === recipeId
-    );
+  CreateOrUpdateRecipe(recipe: Recipe) {
+    console.log('Received recipe:', recipe);
+    // Handle creating/updating logic here
+    this.showCreateRecipeForm = false; // Hide form after submission
+  }
 
-    if (selectedRecipe) {
-      this.dialog.open(AddReceipeComponent, {
-        data: selectedRecipe,
-        enterAnimationDuration: '200ms',
-        exitAnimationDuration: '200ms',
-      });
+  OnEditRecipeClicked(id: string | undefined) {
+    if (id) {
+      this.selectedRecipe =
+        this.recipes.find((recipe) => recipe.id === id) || ({} as Recipe);
+      this.showCreateRecipeForm = true;
+      this.editMode = true;
     }
+  }
+
+  onCancel() {
+    this.showCreateRecipeForm = false;
+    this.editMode = false;
   }
 }
