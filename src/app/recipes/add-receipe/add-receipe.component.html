@@ -1,6 +1,8 @@
 <section class="overlay">
   <div class="popup">
-    <h2 mat-dialog-title>Add New Recipe</h2>
+    <h2 mat-dialog-title>
+      {{ isEditMode ? "Update Recipe" : "Add New Recipe" }}
+    </h2>
     <form [formGroup]="recipeForm">
       <mat-form-field appearance="outline" class="full-width">
         <mat-label>Recipe Title</mat-label>
@@ -11,21 +13,56 @@
       </mat-form-field>
 
       <div class="image-upload-container btn btn-bwm">
-        <span>Select Image</span>
         <input
           #imageInput
           type="file"
           accept="image/*"
           (change)="processFile(imageInput)"
+          [style.display]="'none'"
         />
       </div>
+      <div
+        class="current-image-url"
+        *ngIf="isEditMode && recipeForm.get('thumbnail')?.value"
+      >
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Current Image URL</mat-label>
+          <input
+            matInput
+            [value]="recipeForm.get('thumbnail')?.value"
+            readonly
+          />
+          <button
+            matSuffix
+            mat-icon-button
+            (click)="imageInput.click()"
+            type="button"
+          >
+            <mat-icon>edit</mat-icon>
+          </button>
+        </mat-form-field>
+      </div>
+      <mat-error
+        *ngIf="
+          recipeForm.get('thumbnail')?.invalid &&
+          recipeForm.get('thumbnail')?.touched
+        "
+      >
+        Image is required.
+      </mat-error>
 
-      <div *ngIf="selectedFile" class="img-preview-container">
+      <div
+        *ngIf="selectedFile || recipeForm.get('thumbnail')?.value"
+        class="img-preview-container"
+      >
         <div
-          class="img-preview{{
-            selectedFile.status === 'fail' ? '-error' : ''
-          }}"
-          [ngStyle]="{ 'background-image': 'url(' + selectedFile.src + ')' }"
+          class="img-preview"
+          [ngStyle]="{
+            'background-image':
+              'url(' +
+              (selectedFile.src || recipeForm.get('thumbnail')?.value) +
+              ')'
+          }"
         ></div>
       </div>
 

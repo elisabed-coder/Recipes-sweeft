@@ -98,6 +98,7 @@ export class RecipesComponent {
     console.log('Received recipe:', recipe);
     // Handle creating/updating logic here
     this.showCreateRecipeForm = false; // Hide form after submission
+    this.fetchRecipes();
   }
 
   OnEditRecipeClicked(id: string | undefined) {

@@ -59,7 +59,7 @@ export class AddReceipeComponent {
           Validators.maxLength(100),
         ],
       ],
-      thumbnail: [''],
+      thumbnail: ['', Validators.required],
       instructions: [
         '',
         [
@@ -77,6 +77,7 @@ export class AddReceipeComponent {
       this.recipeForm.patchValue({
         title: this.selectedRecipe.title,
         instructions: this.selectedRecipe.instructions,
+        thumbnail: this.selectedRecipe.thumbnail,
       });
       this.selectedRecipe.ingredients.forEach((ingredient: string) => {
         this.ingredients.push(
@@ -86,6 +87,15 @@ export class AddReceipeComponent {
           ])
         );
       });
+      if (this.selectedRecipe.thumbnail) {
+        this.selectedFile = new ImageSnippet(
+          this.selectedRecipe.thumbnail,
+          new File([], 'placeholder')
+        );
+      }
+      if (this.ingredients.length === 0) {
+        this.addIngredient();
+      }
     }
   }
 
@@ -118,8 +128,9 @@ export class AddReceipeComponent {
       this.formValidationService.markFormGroupTouched(this.recipeForm);
       return;
     }
+    const thumbnailValue = this.recipeForm.get('thumbnail')?.value;
 
-    if (!this.selectedFile) {
+    if (!thumbnailValue) {
       // Handle no image selected scenario
       return;
     }
@@ -150,14 +161,31 @@ export class AddReceipeComponent {
 
   processFile(imageInput: any) {
     const file: File = imageInput.files[0];
+    if (!file) return;
+
     const reader = new FileReader();
 
     reader.addEventListener('load', (event: any) => {
       this.selectedFile = new ImageSnippet(event.target.result, file);
-      this.imageService.uploadImage(this.selectedFile.file).subscribe(
-        (res) => {},
-        (err) => {}
-      );
+
+      // Update the form control before uploading
+      this.recipeForm.patchValue({
+        thumbnail: event.target.result,
+      });
+
+      this.imageService.uploadImage(this.selectedFile.file).subscribe({
+        next: (res) => {
+          this.recipeForm.patchValue({
+            thumbnail: res.imageUrl,
+          });
+          this.recipeForm.get('thumbnail')?.markAsTouched();
+        },
+        error: (err) => {
+          console.error('Image upload failed', err);
+          // Reset the form control on error
+          this.recipeForm.get('thumbnail')?.setErrors({ uploadError: true });
+        },
+      });
     });
 
     reader.readAsDataURL(file);
