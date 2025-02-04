@@ -70,7 +70,6 @@ export class AddReceipeComponent {
       ],
       ingredients: this.fb.array([]),
     });
-    this.addIngredient();
   }
 
   ngOnInit() {
@@ -87,8 +86,6 @@ export class AddReceipeComponent {
           ])
         );
       });
-    } else {
-      this.addIngredient();
     }
   }
 

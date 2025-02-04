@@ -1,83 +1,87 @@
-<section class="wrapper">
-  <h2 mat-dialog-title>Add New Recipe</h2>
-  <form [formGroup]="recipeForm">
-    <mat-form-field appearance="outline" class="full-width">
-      <mat-label>Recipe Title</mat-label>
-      <input matInput formControlName="title" required />
-      <mat-error *ngIf="recipeForm.get('title')">
-        {{ getErrorMessage(recipeForm.get("title")) }}
-      </mat-error>
-    </mat-form-field>
+<section class="overlay">
+  <div class="popup">
+    <h2 mat-dialog-title>Add New Recipe</h2>
+    <form [formGroup]="recipeForm">
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Recipe Title</mat-label>
+        <input matInput formControlName="title" required />
+        <mat-error *ngIf="recipeForm.get('title')">
+          {{ getErrorMessage(recipeForm.get("title")) }}
+        </mat-error>
+      </mat-form-field>
 
-    <div class="image-upload-container btn btn-bwm">
-      <span>Select Image</span>
-      <input
-        #imageInput
-        type="file"
-        accept="image/*"
-        (change)="processFile(imageInput)"
-      />
-    </div>
+      <div class="image-upload-container btn btn-bwm">
+        <span>Select Image</span>
+        <input
+          #imageInput
+          type="file"
+          accept="image/*"
+          (change)="processFile(imageInput)"
+        />
+      </div>
 
-    <div *ngIf="selectedFile" class="img-preview-container">
-      <div
-        class="img-preview{{ selectedFile.status === 'fail' ? '-error' : '' }}"
-        [ngStyle]="{ 'background-image': 'url(' + selectedFile.src + ')' }"
-      ></div>
-    </div>
+      <div *ngIf="selectedFile" class="img-preview-container">
+        <div
+          class="img-preview{{
+            selectedFile.status === 'fail' ? '-error' : ''
+          }}"
+          [ngStyle]="{ 'background-image': 'url(' + selectedFile.src + ')' }"
+        ></div>
+      </div>
 
-    <div formArrayName="ingredients" class="ingredients-list">
-      <h3>Ingredients</h3>
-      <div
-        *ngFor="let ingredient of ingredients.controls; let i = index"
-        class="ingredient-row"
-      >
-        <mat-form-field appearance="outline" class="ingredient-input">
-          <mat-label>Ingredient {{ i + 1 }}</mat-label>
-          <input matInput [formControlName]="i" required />
-          <mat-error *ngIf="ingredient">
-            {{ getErrorMessage(ingredient) }}
-          </mat-error>
-        </mat-form-field>
-        <button
-          mat-icon-button
-          color="warn"
-          type="button"
-          (click)="removeIngredient(i)"
+      <div formArrayName="ingredients" class="ingredients-list">
+        <h3>Ingredients</h3>
+        <div
+          *ngFor="let ingredient of ingredients.controls; let i = index"
+          class="ingredient-row"
         >
-          <mat-icon>delete</mat-icon>
+          <mat-form-field appearance="outline" class="ingredient-input">
+            <mat-label>Ingredient {{ i + 1 }}</mat-label>
+            <input matInput [formControlName]="i" required />
+            <mat-error *ngIf="ingredient">
+              {{ getErrorMessage(ingredient) }}
+            </mat-error>
+          </mat-form-field>
+          <button
+            mat-icon-button
+            color="warn"
+            type="button"
+            (click)="removeIngredient(i)"
+          >
+            <mat-icon>delete</mat-icon>
+          </button>
+        </div>
+        <button
+          mat-button
+          type="button"
+          (click)="addIngredient()"
+          class="add-ingredient-btn"
+        >
+          <mat-icon>add</mat-icon> Add Ingredient
         </button>
       </div>
-      <button
-        mat-button
-        type="button"
-        (click)="addIngredient()"
-        class="add-ingredient-btn"
-      >
-        <mat-icon>add</mat-icon> Add Ingredient
-      </button>
-    </div>
 
-    <mat-form-field appearance="outline" class="full-width">
-      <mat-label>Instructions</mat-label>
-      <textarea
-        matInput
-        formControlName="instructions"
-        required
-        rows="4"
-      ></textarea>
-      <mat-error *ngIf="recipeForm.get('instructions')">
-        {{ getErrorMessage(recipeForm.get("instructions")) }}
-      </mat-error>
-    </mat-form-field>
-  </form>
-  <button mat-button mat-dialog-close>Cancel</button>
-  <button
-    mat-button
-    color="primary"
-    (click)="submitForm()"
-    [disabled]="recipeForm.invalid"
-  >
-    {{ isEditMode ? "Update Recipe" : "Add Recipe" }}
-  </button>
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Instructions</mat-label>
+        <textarea
+          matInput
+          formControlName="instructions"
+          required
+          rows="4"
+        ></textarea>
+        <mat-error *ngIf="recipeForm.get('instructions')">
+          {{ getErrorMessage(recipeForm.get("instructions")) }}
+        </mat-error>
+      </mat-form-field>
+    </form>
+    <button mat-button mat-dialog-close (click)="onCancel()">Cancel</button>
+    <button
+      mat-button
+      color="primary"
+      (click)="submitForm()"
+      [disabled]="recipeForm.invalid"
+    >
+      {{ isEditMode ? "Update Recipe" : "Add Recipe" }}
+    </button>
+  </div>
 </section>
