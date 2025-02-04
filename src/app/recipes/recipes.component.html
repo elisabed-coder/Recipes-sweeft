@@ -4,11 +4,6 @@
 <button mat-raised-button (click)="openDialog('300ms', '150ms')">
   Add New Recipe
 </button>
-
-<button mat-raised-button (click)="openDialog('300ms', '150ms')">
-  Open dialog slowly
-</button>
-
 <div class="container">
   @for(recipe of recipes; track recipe.id){
   <mat-card class="example-card" appearance="outlined">
@@ -29,8 +24,11 @@
     </mat-card-content>
     <mat-card-actions>
       <button mat-button>LIKE</button>
-      <button mat-button (click)="EditRecipe(recipe.id)">SEE DETAIlS</button>
+      <button mat-button (click)="getRecipeDetails(recipe.id)">
+        SEE DETAIlS
+      </button>
       <button mat-button (click)="DeleteRecipe(recipe.id)">DELETE</button>
+      <button mat-button (click)="editRecipe(recipe.id)">EDIT</button>
     </mat-card-actions>
   </mat-card>
   }

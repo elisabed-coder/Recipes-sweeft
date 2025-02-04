@@ -1,5 +1,10 @@
 import { HttpClient } from '@angular/common/http';
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  inject,
+} from '@angular/core';
 import { Recipe } from '../Models/recipe';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
@@ -16,11 +21,11 @@ import { ConfirmDeleteComponent } from '../utility/confirm-delete/confirm-delete
   imports: [MatCardModule, MatButtonModule, CommonModule, ReactiveFormsModule],
   templateUrl: './recipes.component.html',
   styleUrl: './recipes.component.scss',
-  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class RecipesComponent {
   http = inject(HttpClient);
   readonly dialog = inject(MatDialog);
+  private cdr = inject(ChangeDetectorRef);
 
   recipes: Recipe[] = [];
   currentRecipeId!: string;
@@ -42,12 +47,12 @@ export class RecipesComponent {
     });
   }
 
-  EditRecipe(id: string | undefined) {
+  getRecipeDetails(id: string | undefined) {
     if (id) {
       this.currentRecipeId = id;
 
       this.selectedRecipe = this.recipes.find((recipe) => recipe.id === id);
-      this.router.navigate(['edit-recipe', id]);
+      this.router.navigate(['recipe', id]);
     }
   }
 
@@ -70,11 +75,28 @@ export class RecipesComponent {
           this.recipeService.deleteRecipeById(id).subscribe({
             next: () => {
               console.log('Recipe Deleted Successfully');
-              this.fetchRecipes();
+              this.recipes = [
+                ...this.recipes.filter((recipe) => recipe.id !== id),
+              ]; // Assign a new reference
+              this.cdr.markForCheck();
             },
             error: (error) => console.log(error),
           });
         }
+      });
+    }
+  }
+
+  editRecipe(recipeId: string | undefined) {
+    const selectedRecipe = this.recipes.find(
+      (recipe) => recipe.id === recipeId
+    );
+
+    if (selectedRecipe) {
+      this.dialog.open(AddReceipeComponent, {
+        data: selectedRecipe,
+        enterAnimationDuration: '200ms',
+        exitAnimationDuration: '200ms',
       });
     }
   }

@@ -43,6 +43,7 @@ import { FormValidationService } from '../../Services/formValidation.service';
 export class AddReceipeComponent {
   recipeForm: FormGroup;
   selectedFile!: ImageSnippet;
+  isEditMode: boolean = false;
 
   constructor(
     private fb: FormBuilder,

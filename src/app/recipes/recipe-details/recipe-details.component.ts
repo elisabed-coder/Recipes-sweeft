@@ -24,7 +24,7 @@ export class RecipeDetailsComponent {
   ngOnInit(): void {
     this.route.paramMap.subscribe((params) => {
       this.recipeId = params.get('id');
-      console.log('Editing Recipe ID:', this.recipeId); // Debugging purpose
+      console.log('Recipe ID:', this.recipeId); // Debugging purpose
       if (this.recipeId) {
         this.RecipeService.getRecipeById(this.recipeId).subscribe((recipe) => {
           this.recipe = recipe;
@@ -33,6 +33,7 @@ export class RecipeDetailsComponent {
       }
     });
   }
+
   updateRecipe() {
     console.log('updated');
   }
