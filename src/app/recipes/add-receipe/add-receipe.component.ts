@@ -128,78 +128,69 @@ export class AddReceipeComponent {
       this.formValidationService.markFormGroupTouched(this.recipeForm);
       return;
     }
+
     const thumbnailValue = this.recipeForm.get('thumbnail')?.value;
 
     if (!thumbnailValue) {
       return;
     }
-    if (this.isEditMode && !this.selectedFile?.file) {
-      const recipeData: Recipe = {
-        id: this.selectedRecipe.id,
-        title: this.recipeForm.get('title')?.value || '',
-        instructions: this.recipeForm.get('instructions')?.value || '',
-        ingredients: this.ingredients.controls
-          .map((control) => control.value)
-          .filter((ing) => ing.trim() !== ''),
-        thumbnail: thumbnailValue,
-      };
 
-      this.recipeService
-        .updateRecipe(this.selectedRecipe.id || '', recipeData)
-        .subscribe({
-          next: (updatedRecipe) => {
-            console.log('Recipe updated:', updatedRecipe);
-            this.EmitTaskData.emit(updatedRecipe);
-            this.recipeForm.reset();
-          },
-          error: (err) => console.error('Error updating recipe:', err),
-        });
-      return;
+    let recipeData: Recipe = {
+      title: this.recipeForm.get('title')?.value || '',
+      instructions: this.recipeForm.get('instructions')?.value || '',
+      ingredients: this.ingredients.controls
+        .map((control) => control.value)
+        .filter((ing) => ing.trim() !== ''),
+      thumbnail: thumbnailValue,
+    };
+
+    // Check if a new image was selected
+    if (
+      this.selectedFile?.file &&
+      this.selectedFile.file.name !== 'placeholder'
+    ) {
+      // Only upload image if a new file is selected
+      this.imageService.uploadImage(this.selectedFile.file).subscribe({
+        next: (imageResponse) => {
+          recipeData.thumbnail = imageResponse.imageUrl; // Update with new image URL
+
+          this.saveRecipe(recipeData);
+        },
+        error: (err) => console.error('Error uploading image:', err),
+      });
+    } else {
+      // No new image, just save the recipe with existing thumbnail
+      this.saveRecipe(recipeData);
     }
+  }
 
-    this.imageService.uploadImage(this.selectedFile.file).subscribe({
-      next: (imageResponse) => {
-        const recipeData: Recipe = {
-          title: this.recipeForm.get('title')?.value,
-          instructions: this.recipeForm.get('instructions')?.value,
-          ingredients: this.ingredients.controls
-            .map((control) => control.value)
-            .filter((ing) => ing.trim() !== ''),
-          thumbnail: imageResponse.imageUrl,
-        };
+  private saveRecipe(recipeData: Recipe) {
+    const recipeObservable = this.isEditMode
+      ? this.recipeService.updateRecipe(
+          this.selectedRecipe.id || '',
+          recipeData
+        )
+      : this.recipeService.createNewRecipe(recipeData);
 
-        const recipeObservable = this.isEditMode
-          ? this.recipeService.updateRecipe(
-              this.selectedRecipe.id || '',
-              recipeData
-            )
-          : this.recipeService.createNewRecipe(recipeData);
-
-        recipeObservable.subscribe({
-          next: (recipe) => {
-            console.log(
-              this.isEditMode ? 'Recipe updated:' : 'Recipe created:',
-              recipe
-            );
-            this.EmitTaskData.emit(recipe);
-
-            this.recipeForm.reset();
-          },
-          error: (err) =>
-            console.error(
-              this.isEditMode
-                ? 'Error updating recipe:'
-                : 'Error creating recipe:',
-              err
-            ),
-        });
+    recipeObservable.subscribe({
+      next: (recipe) => {
+        console.log(
+          this.isEditMode ? 'Recipe updated:' : 'Recipe created:',
+          recipe
+        );
+        this.EmitTaskData.emit(recipe);
+        this.recipeForm.reset();
       },
-      error: (err) => console.error('Error uploading image:', err),
+      error: (err) =>
+        console.error(
+          this.isEditMode ? 'Error updating recipe:' : 'Error creating recipe:',
+          err
+        ),
     });
   }
 
-  processFile(imageInput: any) {
-    const file: File = imageInput.files[0];
+  processFile(imageInput: HTMLInputElement) {
+    const file: File | null = imageInput.files ? imageInput.files[0] : null;
     if (!file) return;
 
     const reader = new FileReader();
@@ -229,7 +220,6 @@ export class AddReceipeComponent {
 
     reader.readAsDataURL(file);
   }
-
   onCancel() {
     this.cancel.emit();
   }
