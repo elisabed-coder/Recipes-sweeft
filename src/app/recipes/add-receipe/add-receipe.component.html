@@ -12,36 +12,46 @@
         </mat-error>
       </mat-form-field>
 
-      <div class="image-upload-container btn btn-bwm">
+      <div class="image-upload-container" *ngIf="!isEditMode">
         <input
           #imageInput
           type="file"
           accept="image/*"
           (change)="processFile(imageInput)"
-          [style.display]="'none'"
         />
       </div>
-      <div
-        class="current-image-url"
-        *ngIf="isEditMode && recipeForm.get('thumbnail')?.value"
-      >
-        <mat-form-field appearance="outline" class="full-width">
-          <mat-label>Current Image URL</mat-label>
-          <input
-            matInput
-            [value]="recipeForm.get('thumbnail')?.value"
-            readonly
-          />
-          <button
-            matSuffix
-            mat-icon-button
-            (click)="imageInput.click()"
-            type="button"
-          >
-            <mat-icon>edit</mat-icon>
-          </button>
-        </mat-form-field>
+
+      <div class="image-upload-container btn btn-bwm" *ngIf="isEditMode">
+        <input
+          #imageInput
+          type="file"
+          accept="image/*"
+          (change)="processFile(imageInput)"
+          hidden
+        />
+        <div
+          class="current-image-url"
+          *ngIf="recipeForm.get('thumbnail')?.value"
+        >
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Current Image URL</mat-label>
+            <input
+              matInput
+              [value]="recipeForm.get('thumbnail')?.value"
+              readonly
+            />
+            <button
+              matSuffix
+              mat-icon-button
+              (click)="imageInput.click()"
+              type="button"
+            >
+              <mat-icon>edit</mat-icon>
+            </button>
+          </mat-form-field>
+        </div>
       </div>
+
       <mat-error
         *ngIf="
           recipeForm.get('thumbnail')?.invalid &&
@@ -112,12 +122,7 @@
       </mat-form-field>
     </form>
     <button mat-button mat-dialog-close (click)="onCancel()">Cancel</button>
-    <button
-      mat-button
-      color="primary"
-      (click)="submitForm()"
-      [disabled]="recipeForm.invalid"
-    >
+    <button mat-button color="primary" (click)="submitForm()">
       {{ isEditMode ? "Update Recipe" : "Add Recipe" }}
     </button>
   </div>
