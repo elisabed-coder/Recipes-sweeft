@@ -40,8 +40,8 @@ export class AddReceipeComponent {
   selectedFile!: ImageSnippet;
 
   @Input() isEditMode: boolean = false;
-  @Input() selectedRecipe!: Recipe;
-  @Output() EmitTaskData = new EventEmitter<Recipe>();
+  @Input() selectedRecipe!: any;
+  @Output() EmitTaskData = new EventEmitter<any>();
   @Output() cancel = new EventEmitter<void>();
 
   constructor(
@@ -131,7 +131,29 @@ export class AddReceipeComponent {
     const thumbnailValue = this.recipeForm.get('thumbnail')?.value;
 
     if (!thumbnailValue) {
-      // Handle no image selected scenario
+      return;
+    }
+    if (this.isEditMode && !this.selectedFile?.file) {
+      const recipeData: Recipe = {
+        id: this.selectedRecipe.id,
+        title: this.recipeForm.get('title')?.value || '',
+        instructions: this.recipeForm.get('instructions')?.value || '',
+        ingredients: this.ingredients.controls
+          .map((control) => control.value)
+          .filter((ing) => ing.trim() !== ''),
+        thumbnail: thumbnailValue,
+      };
+
+      this.recipeService
+        .updateRecipe(this.selectedRecipe.id || '', recipeData)
+        .subscribe({
+          next: (updatedRecipe) => {
+            console.log('Recipe updated:', updatedRecipe);
+            this.EmitTaskData.emit(updatedRecipe);
+            this.recipeForm.reset();
+          },
+          error: (err) => console.error('Error updating recipe:', err),
+        });
       return;
     }
 
@@ -146,13 +168,30 @@ export class AddReceipeComponent {
           thumbnail: imageResponse.imageUrl,
         };
 
-        this.recipeService.createNewRecipe(recipeData).subscribe({
-          next: (newRecipe) => {
-            console.log('Recipe created:', newRecipe);
-            this.EmitTaskData.emit(newRecipe); // Emit the created recipe
-            this.recipeForm.reset(); // Reset form after submission
+        const recipeObservable = this.isEditMode
+          ? this.recipeService.updateRecipe(
+              this.selectedRecipe.id || '',
+              recipeData
+            )
+          : this.recipeService.createNewRecipe(recipeData);
+
+        recipeObservable.subscribe({
+          next: (recipe) => {
+            console.log(
+              this.isEditMode ? 'Recipe updated:' : 'Recipe created:',
+              recipe
+            );
+            this.EmitTaskData.emit(recipe);
+
+            this.recipeForm.reset();
           },
-          error: (err) => console.error('Error creating recipe:', err),
+          error: (err) =>
+            console.error(
+              this.isEditMode
+                ? 'Error updating recipe:'
+                : 'Error creating recipe:',
+              err
+            ),
         });
       },
       error: (err) => console.error('Error uploading image:', err),
