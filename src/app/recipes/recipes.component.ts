@@ -15,6 +15,8 @@ import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { AddReceipeComponent } from './add-receipe/add-receipe.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { ConfirmDeleteComponent } from '../utility/confirm-delete/confirm-delete.component';
+import { FavoriteService } from '../Services/favorite.service';
+import { MatIconModule } from '@angular/material/icon';
 
 @Component({
   selector: 'app-recipes',
@@ -25,12 +27,16 @@ import { ConfirmDeleteComponent } from '../utility/confirm-delete/confirm-delete
     ReactiveFormsModule,
     MatDialogModule,
     AddReceipeComponent,
+    MatIconModule,
   ],
   templateUrl: './recipes.component.html',
   styleUrl: './recipes.component.scss',
 })
 export class RecipesComponent {
   recipes: Recipe[] = [];
+
+  filteredRecipes: Recipe[] = [];
+  showOnlyFavorites: boolean = false;
 
   http = inject(HttpClient);
   readonly dialog = inject(MatDialog);
@@ -46,11 +52,15 @@ export class RecipesComponent {
   constructor(
     private router: Router,
     private recipeService: RecipeService,
-    private cdr: ChangeDetectorRef
+    private favoriteService: FavoriteService
   ) {}
 
   ngOnInit(): void {
     this.fetchRecipes();
+
+    this.favoriteService.getFavoritesObservable().subscribe(() => {
+      this.applyFavoriteFilter();
+    });
   }
 
   fetchRecipes() {
@@ -58,6 +68,7 @@ export class RecipesComponent {
       next: (recipes) => {
         this.recipes = recipes;
         console.log(recipes);
+        this.applyFavoriteFilter();
       },
       error: (err) => console.error('Error:', err),
     });
@@ -113,5 +124,30 @@ export class RecipesComponent {
   onCancel() {
     this.showCreateRecipeForm = false;
     this.editMode = false;
+  }
+
+  isFavorite(recipeId: string | undefined): boolean {
+    return recipeId ? this.favoriteService.isFavorite(recipeId) : false;
+  }
+
+  toggleFavorite(recipe: Recipe) {
+    if (recipe.id) {
+      this.favoriteService.toggleFavorite(recipe.id);
+    }
+  }
+
+  toggleFavoriteFilter() {
+    this.showOnlyFavorites = !this.showOnlyFavorites;
+    this.applyFavoriteFilter();
+  }
+
+  private applyFavoriteFilter() {
+    if (this.showOnlyFavorites) {
+      this.filteredRecipes = this.recipes.filter(
+        (recipe) => recipe.id && this.favoriteService.isFavorite(recipe.id)
+      );
+    } else {
+      this.filteredRecipes = [...this.recipes];
+    }
   }
 }
