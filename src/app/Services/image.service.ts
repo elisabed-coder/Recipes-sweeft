@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
+import { MatSnackBar } from '@angular/material/snack-bar'; // Import MatSnackBar
 
 @Injectable({
   providedIn: 'root',
@@ -9,7 +10,7 @@ import { catchError } from 'rxjs/operators';
 export class ImageService {
   private imageServerUrl = 'http://localhost:3001';
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private snackBar: MatSnackBar) {} // Inject MatSnackBar
 
   uploadImage(file: File): Observable<{ imageUrl: string }> {
     const formData = new FormData();
@@ -17,11 +18,10 @@ export class ImageService {
 
     return this.http
       .post<{ imageUrl: string }>(`${this.imageServerUrl}/upload`, formData)
-      .pipe(catchError(this.handleError));
+      .pipe(catchError(this.handleError.bind(this))); // Use bind to maintain context
   }
 
   private handleError(error: HttpErrorResponse) {
-    console.error('An error occurred:', error);
     let errorMessage = 'An unknown error occurred';
 
     if (error.error instanceof ErrorEvent) {
@@ -32,6 +32,13 @@ export class ImageService {
       errorMessage = error.error.error || error.message;
     }
 
+    // Display the error message in the Snackbar
+    this.snackBar.open(errorMessage, 'Close', {
+      duration: 5000, // Show for 5 seconds
+      panelClass: ['error-snackbar'], // Optional class for styling
+    });
+
+    // Return the error to the component for further handling if necessary
     return throwError(() => new Error(errorMessage));
   }
 }

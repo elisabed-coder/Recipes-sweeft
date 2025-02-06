@@ -17,6 +17,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { ConfirmDeleteComponent } from '../utility/confirm-delete/confirm-delete.component';
 import { FavoriteService } from '../Services/favorite.service';
 import { MatIconModule } from '@angular/material/icon';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-recipes',
@@ -40,6 +41,7 @@ export class RecipesComponent {
 
   http = inject(HttpClient);
   readonly dialog = inject(MatDialog);
+  readonly snackBar = inject(MatSnackBar);
 
   currentRecipeId!: string;
   selectedRecipe!: Recipe;
@@ -70,7 +72,9 @@ export class RecipesComponent {
         console.log(recipes);
         this.applyFavoriteFilter();
       },
-      error: (err) => console.error('Error:', err),
+      error: (err) => {
+        this.isLoading = false;
+      },
     });
   }
 
@@ -92,13 +96,18 @@ export class RecipesComponent {
         if (confirmed) {
           this.recipeService.deleteRecipeById(id).subscribe({
             next: () => {
-              console.log('Recipe Deleted Successfully');
-              this.recipes = [
-                ...this.recipes.filter((recipe) => recipe.id !== id),
-              ]; // Assign a new reference
-              // this.cdr.markForCheck();
+              this.recipes = this.recipes.filter((recipe) => recipe.id !== id);
+              this.applyFavoriteFilter();
+              this.snackBar.open('Recipe deleted successfully', 'Close', {
+                duration: 3000,
+              });
             },
-            error: (error) => console.log(error),
+            error: (error) => {
+              console.log(error);
+              this.snackBar.open('Failed to delete recipe', 'Close', {
+                duration: 3000,
+              });
+            },
           });
         }
       });

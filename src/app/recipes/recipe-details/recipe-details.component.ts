@@ -1,16 +1,17 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { Recipe } from '../../Models/recipe';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { RecipeService } from '../../Services/recipes.service';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { CommonModule } from '@angular/common';
+import { MatSnackBar } from '@angular/material/snack-bar'; // Import MatSnackBar
 
 @Component({
   selector: 'app-recipe-details',
   imports: [MatCardModule, MatButtonModule, CommonModule],
   templateUrl: './recipe-details.component.html',
-  styleUrl: './recipe-details.component.scss',
+  styleUrls: ['./recipe-details.component.scss'],
 })
 export class RecipeDetailsComponent {
   recipeId!: string | null;
@@ -18,7 +19,8 @@ export class RecipeDetailsComponent {
 
   constructor(
     private route: ActivatedRoute,
-    private RecipeService: RecipeService
+    private recipeService: RecipeService,
+    private snackBar: MatSnackBar // Inject MatSnackBar
   ) {}
 
   ngOnInit(): void {
@@ -26,9 +28,19 @@ export class RecipeDetailsComponent {
       this.recipeId = params.get('id');
       console.log('Recipe ID:', this.recipeId); // Debugging purpose
       if (this.recipeId) {
-        this.RecipeService.getRecipeById(this.recipeId).subscribe((recipe) => {
-          this.recipe = recipe;
-          console.log('Recipe Details:', this.recipe); // Debugging purpose
+        this.recipeService.getRecipeById(this.recipeId).subscribe({
+          next: (recipe) => {
+            this.recipe = recipe;
+            console.log('Recipe Details:', this.recipe); // Debugging purpose
+          },
+          error: (err) => {
+            const errorMessage =
+              err.message || 'An error occurred while fetching recipe details';
+            this.snackBar.open(errorMessage, 'Close', {
+              duration: 5000, // Show for 5 seconds
+              panelClass: ['error-snackbar'], // Optional class for styling
+            });
+          },
         });
       }
     });

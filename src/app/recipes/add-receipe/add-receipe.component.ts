@@ -18,6 +18,7 @@ import { ImageService } from '../../Services/image.service';
 import { ImageSnippet } from '../../Models/ImageSnipper';
 import { FormValidationService } from '../../Services/formValidation.service';
 import { Recipe } from '../../Models/recipe';
+import { MatSnackBar } from '@angular/material/snack-bar'; // Import MatSnackBar
 
 @Component({
   selector: 'app-add-receipe',
@@ -33,7 +34,7 @@ import { Recipe } from '../../Models/recipe';
   ],
   providers: [FormBuilder],
   templateUrl: './add-receipe.component.html',
-  styleUrl: './add-receipe.component.scss',
+  styleUrls: ['./add-receipe.component.scss'],
 })
 export class AddReceipeComponent {
   recipeForm: FormGroup;
@@ -48,7 +49,8 @@ export class AddReceipeComponent {
     private fb: FormBuilder,
     private recipeService: RecipeService,
     private imageService: ImageService,
-    private formValidationService: FormValidationService
+    private formValidationService: FormValidationService,
+    private snackBar: MatSnackBar // Inject MatSnackBar
   ) {
     this.recipeForm = this.fb.group({
       title: [
@@ -153,10 +155,19 @@ export class AddReceipeComponent {
       this.imageService.uploadImage(this.selectedFile.file).subscribe({
         next: (imageResponse) => {
           recipeData.thumbnail = imageResponse.imageUrl; // Update with new image URL
-
           this.saveRecipe(recipeData);
         },
-        error: (err) => console.error('Error uploading image:', err),
+        error: (err) => {
+          console.error('Error uploading image:', err);
+          this.snackBar.open(
+            'Error uploading image. Please try again.',
+            'Close',
+            {
+              duration: 5000,
+              panelClass: ['error-snackbar'],
+            }
+          );
+        },
       });
     } else {
       // No new image, just save the recipe with existing thumbnail
@@ -180,12 +191,27 @@ export class AddReceipeComponent {
         );
         this.EmitTaskData.emit(recipe);
         this.recipeForm.reset();
+        this.snackBar.open('Recipe saved successfully!', 'Close', {
+          duration: 3000,
+          panelClass: ['success-snackbar'],
+        });
       },
-      error: (err) =>
+      error: (err) => {
         console.error(
           this.isEditMode ? 'Error updating recipe:' : 'Error creating recipe:',
           err
-        ),
+        );
+        this.snackBar.open(
+          `Error: ${
+            this.isEditMode ? 'Updating' : 'Creating'
+          } recipe. Please try again.`,
+          'Close',
+          {
+            duration: 5000,
+            panelClass: ['error-snackbar'],
+          }
+        );
+      },
     });
   }
 
@@ -214,12 +240,21 @@ export class AddReceipeComponent {
           console.error('Image upload failed', err);
           // Reset the form control on error
           this.recipeForm.get('thumbnail')?.setErrors({ uploadError: true });
+          this.snackBar.open(
+            'Error uploading image. Please try again.',
+            'Close',
+            {
+              duration: 5000,
+              panelClass: ['error-snackbar'],
+            }
+          );
         },
       });
     });
 
     reader.readAsDataURL(file);
   }
+
   onCancel() {
     this.cancel.emit();
   }
