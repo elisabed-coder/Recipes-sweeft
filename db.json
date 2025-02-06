@@ -1,22 +1,31 @@
 {
   "recipes": [
     {
-      "title": "test",
+      "title": "Carbonara",
       "instructions": "scsdzxcdvx",
       "ingredients": [
         "asdasd"
       ],
-      "thumbnail": "http://localhost:3001/uploads/455aa205-43c1-4131-aa82-a13c1751a3a4.jpg",
+      "thumbnail": "http://localhost:3001/uploads/carbonara.jpg",
       "id": "22ec"
     },
     {
-      "id": "167e",
-      "title": "jbknlbjkbk",
+      "title": "Pizza",
       "instructions": " bkbkjnjknlk",
       "ingredients": [
         "kjbkjnk"
       ],
-      "thumbnail": "http://localhost:3001/uploads/e5af490c-15cf-44e3-9d5f-649955f48fdd.jpg"
+      "thumbnail": "http://localhost:3001/uploads/pizza.jpg",
+      "id": "167e"
+    },
+    {
+      "id": "36ea",
+      "title": "Capricozza",
+      "instructions": " nklnknjkn k ",
+      "ingredients": [
+        "njknln"
+      ],
+      "thumbnail": "http://localhost:3001/uploads/pizza.jpg"
     }
   ]
 }

@@ -1,80 +1,85 @@
-<app-add-receipe
-  *ngIf="showCreateRecipeForm"
-  (EmitTaskData)="CreateOrUpdateRecipe($event)"
-  (cancel)="onCancel()"
-  [isEditMode]="editMode"
-  [selectedRecipe]="selectedRecipe"
-></app-add-receipe>
+<section>
+  <app-add-receipe
+    *ngIf="showCreateRecipeForm"
+    (EmitTaskData)="CreateOrUpdateRecipe($event)"
+    (cancel)="onCancel()"
+    [isEditMode]="editMode"
+    [selectedRecipe]="selectedRecipe"
+  ></app-add-receipe>
 
-<div *ngIf="isLoading" class="loader-container">
-  <mat-progress-spinner
-    mode="indeterminate"
-    diameter="50"
-  ></mat-progress-spinner>
-</div>
-
-<div *ngIf="!isLoading && recipes.length < 1">
-  <h2>No recipes has been created yet!</h2>
-</div>
-<div class="filter-container">
-  <button
-    (click)="showCreateRecipeForm = true; editMode = false"
-    class="glow-on-hover"
-  >
-    Add New Recipe
-  </button>
-  <div class="filter-box">
-    <div class="search-container">
-      <input
-        type="text"
-        name="search"
-        placeholder="Search..."
-        class="search-input"
-        (input)="onSearchChange($event)"
-      />
-      <div class="search"></div>
-    </div>
-
-    <button mat-button (click)="toggleFavoriteFilter()">
-      {{ showOnlyFavorites ? "Show All Recipes" : "Show Favorites" }}
-    </button>
+  <div *ngIf="isLoading" class="loader-container">
+    <mat-progress-spinner
+      mode="indeterminate"
+      diameter="50"
+    ></mat-progress-spinner>
   </div>
-</div>
 
-<div class="container" *ngIf="!isLoading && filteredRecipes">
-  @for(recipe of filteredRecipes; track recipe.id){
-  <mat-card
-    class="example-card grow"
-    appearance="outlined"
-    [ngStyle]="setBackgroundStyle()"
-  >
-    <div>
-      <div mat-card-avatar class="example-header-image"></div>
-      <h3>{{ recipe.title }}</h3>
-      <button
-        mat-icon-button
-        (click)="toggleFavorite(recipe)"
-        class="animated-icon"
-      >
-        <mat-icon [class.favorite]="isFavorite(recipe.id)">
-          {{ isFavorite(recipe.id) ? "favorite" : "favorite_border" }}
-        </mat-icon>
+  <div *ngIf="!isLoading && recipes.length < 1">
+    <h2>No recipes has been created yet!</h2>
+  </div>
+  <div class="filter-container">
+    <button
+      (click)="showCreateRecipeForm = true; editMode = false"
+      class="glow-on-hover"
+    >
+      Add New Recipe
+    </button>
+    <div class="filter-box">
+      <div class="search-container">
+        <i class="material-icons search-icon">search</i>
+        <input
+          type="text"
+          name="search"
+          placeholder="Search..."
+          class="search-input"
+          (input)="onSearchChange($event)"
+        />
+        <div class="search"></div>
+      </div>
+
+      <button mat-button (click)="toggleFavoriteFilter()">
+        {{ showOnlyFavorites ? "Show All Recipes" : "Show Favorites" }}
       </button>
     </div>
-    <img
-      mat-card-image
-      [src]="recipe.thumbnail"
-      sizes="(max-width: 600px) 300px, 350px"
-      alt="Recipe Image"
-      loading="lazy"
-    />
-    <mat-card-actions>
-      <button mat-button (click)="getRecipeDetails(recipe.id)">
-        SEE DETAIlS
-      </button>
-      <button mat-button (click)="DeleteRecipe(recipe.id)">DELETE</button>
-      <button mat-button (click)="OnEditRecipeClicked(recipe.id)">EDIT</button>
-    </mat-card-actions>
-  </mat-card>
-  }
-</div>
+  </div>
+
+  <div class="container" *ngIf="!isLoading && filteredRecipes">
+    @for(recipe of filteredRecipes; track recipe.id){
+    <mat-card
+      class="example-card grow"
+      appearance="outlined"
+      [ngStyle]="setBackgroundStyle()"
+    >
+      <div>
+        <div mat-card-avatar class="example-header-image"></div>
+        <h3>{{ recipe.title }}</h3>
+        <button
+          mat-icon-button
+          (click)="toggleFavorite(recipe)"
+          class="animated-icon"
+        >
+          <mat-icon [class.favorite]="isFavorite(recipe.id)">
+            {{ isFavorite(recipe.id) ? "favorite" : "favorite_border" }}
+          </mat-icon>
+        </button>
+      </div>
+      <img
+        mat-card-image
+        [src]="recipe.thumbnail"
+        sizes="(max-width: 600px) 300px, 350px"
+        alt="Recipe Image"
+        loading="eager"
+      />
+      <mat-card-actions>
+        <button mat-button (click)="getRecipeDetails(recipe.id)">
+          SEE DETAIlS
+        </button>
+        <button mat-button (click)="DeleteRecipe(recipe.id)">DELETE</button>
+        <button mat-button (click)="OnEditRecipeClicked(recipe.id)">
+          EDIT
+        </button>
+      </mat-card-actions>
+    </mat-card>
+    }
+  </div>
+</section>
