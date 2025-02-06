@@ -19,8 +19,11 @@
         <p>{{ recipe.instructions }}</p>
       </mat-card-content>
       <mat-card-actions>
-        <button mat-button>LIKE</button>
-        <button mat-button>SHARE</button>
+        <button mat-icon-button (click)="toggleFavorite(recipe)">
+          <mat-icon [class.favorite]="isFavorite(recipe.id)">
+            {{ isFavorite(recipe.id) ? "favorite" : "favorite_border" }}
+          </mat-icon>
+        </button>
       </mat-card-actions>
     </mat-card>
   </div>
