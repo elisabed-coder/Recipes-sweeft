@@ -6,7 +6,14 @@
   [selectedRecipe]="selectedRecipe"
 ></app-add-receipe>
 
-<div style="text-align: center" *ngIf="recipes.length < 1">
+<div *ngIf="isLoading" class="loader-container">
+  <mat-progress-spinner
+    mode="indeterminate"
+    diameter="50"
+  ></mat-progress-spinner>
+</div>
+
+<div style="text-align: center" *ngIf="!isLoading && recipes.length < 1">
   <h2>No recipes has been created yet!</h2>
 </div>
 <button
@@ -16,16 +23,21 @@
   Add New Recipe
 </button>
 
-<button mat-button (click)="toggleFavoriteFilter()">
-  {{ showOnlyFavorites ? "Show All Recipes" : "Show Favorites" }}
-</button>
-
-<div class="container">
+<div class="filters">
+  <button mat-button (click)="toggleFavoriteFilter()">
+    {{ showOnlyFavorites ? "Show All Recipes" : "Show Favorites" }}
+  </button>
+</div>
+<div class="container" *ngIf="!isLoading && filteredRecipes">
   @for(recipe of filteredRecipes; track recipe.id){
-  <mat-card class="example-card" appearance="outlined">
+  <mat-card
+    class="example-card"
+    appearance="outlined"
+    [ngStyle]="setBackgroundStyle()"
+  >
     <mat-card-header>
       <div mat-card-avatar class="example-header-image"></div>
-      <mat-card-title>{{ recipe.title }}</mat-card-title>
+      <h3>{{ recipe.title }}</h3>
       <mat-card-subtitle>Recipe</mat-card-subtitle>
       <button mat-icon-button (click)="toggleFavorite(recipe)">
         <mat-icon [class.favorite]="isFavorite(recipe.id)">

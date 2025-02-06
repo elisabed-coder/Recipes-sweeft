@@ -18,7 +18,7 @@ import { ConfirmDeleteComponent } from '../utility/confirm-delete/confirm-delete
 import { FavoriteService } from '../Services/favorite.service';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSnackBar } from '@angular/material/snack-bar';
-
+import { MatProgressSpinner } from '@angular/material/progress-spinner';
 @Component({
   selector: 'app-recipes',
   imports: [
@@ -29,6 +29,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
     MatDialogModule,
     AddReceipeComponent,
     MatIconModule,
+    MatProgressSpinner,
   ],
   templateUrl: './recipes.component.html',
   styleUrl: './recipes.component.scss',
@@ -66,14 +67,19 @@ export class RecipesComponent {
   }
 
   fetchRecipes() {
+    this.isLoading = true;
     this.recipeService.getRecipes().subscribe({
       next: (recipes) => {
+        this.isLoading = false;
         this.recipes = recipes;
         console.log(recipes);
         this.applyFavoriteFilter();
       },
       error: (err) => {
         this.isLoading = false;
+        this.snackBar.open(err, 'Close', {
+          duration: 3000,
+        });
       },
     });
   }
@@ -158,5 +164,16 @@ export class RecipesComponent {
     } else {
       this.filteredRecipes = [...this.recipes];
     }
+  }
+
+  getColor = () => `#${Math.random().toString(16).slice(-6)}66`;
+
+  color: string = this.getColor();
+
+  setBackgroundStyle() {
+    return {
+      background: `radial-gradient(${this.color}, #39393f)`,
+      'box-shadow': `0 0 60px ${this.color}`,
+    };
   }
 }

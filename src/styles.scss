@@ -1,14 +1,4 @@
 /* You can add global styles to this file, and also import other style files */
-
-html,
-body {
-  height: 100%;
-}
-body {
-  margin: 0;
-  font-family: Roboto, "Helvetica Neue", sans-serif;
-}
-
 .error-snackbar {
   background-color: #f44336;
   color: white;
@@ -17,4 +7,30 @@ body {
 .success-snackbar {
   background-color: #4caf50;
   color: white;
+}
+
+html,
+body {
+  width: 100%;
+  padding: 0;
+  margin: 0;
+  background: #2d2d32;
+  font-family: "avenir next", avenir, "helvetica neue", helvetica, ubuntu,
+    roboto, noto, "segoe ui", arial, sans-serif;
+  font-weight: 400;
+  color: #444;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  font-family: "Thrones", "avenir next", avenir, "helvetica neue", helvetica,
+    ubuntu, roboto, noto, "segoe ui", arial, sans-serif;
+}
+
+* {
+  box-sizing: border-box;
 }
