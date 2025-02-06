@@ -1,32 +1,13 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { Subscription } from 'rxjs';
-import { ErrorService } from '../../Services/error.service';
+import { Input, OnInit, Component } from '@angular/core';
 
 @Component({
   selector: 'app-snackbar',
-  standalone: true,
-  imports: [CommonModule],
+  imports: [],
   templateUrl: './snackbar.component.html',
   styleUrl: './snackbar.component.scss',
 })
-export class SnackbarComponent implements OnInit, OnDestroy {
-  errorMessage: string | null = null;
-  private subscription: Subscription | null = null;
+export class SnackbarComponent implements OnInit {
+  @Input() errorMessage: string | null = null;
 
-  constructor(private errorService: ErrorService) {}
-
-  ngOnInit(): void {
-    this.subscription = this.errorService.errorMessage$.subscribe(
-      (message) => (this.errorMessage = message)
-    );
-  }
-
-  ngOnDestroy(): void {
-    this.subscription?.unsubscribe();
-  }
-
-  closeSnackbar(): void {
-    this.errorService.clearError();
-  }
+  ngOnInit(): void {}
 }
