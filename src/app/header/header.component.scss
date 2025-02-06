@@ -3,15 +3,18 @@
   padding: 10px;
   text-align: center;
   display: flex;
-  flex-direction: column;
   justify-content: space-between;
   align-items: center;
 
   h1 {
-    font-size: 2.5rem;
-    letter-spacing: 3px;
-    color: #ffffff;
-    font-weight: normal;
+    a {
+      text-decoration: none;
+      font-size: 2.5rem;
+      letter-spacing: 3px;
+      color: #ffffff;
+      font-weight: normal;
+      text-transform: uppercase;
+    }
 
     @media (max-width: 860px) {
       font-size: 2rem;
@@ -21,20 +24,4 @@
       font-size: 1.3rem;
     }
   }
-}
-
-i {
-  border: solid #ffffff;
-  border-width: 0 3px 3px 0;
-  display: inline-block;
-  padding: 3px;
-}
-
-.down {
-  transform: rotate(45deg);
-  -webkit-transform: rotate(45deg);
-}
-
-.item {
-  height: 30px;
 }

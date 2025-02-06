@@ -1,5 +1,7 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
+import { isPlatformBrowser } from '@angular/common';
+import { PLATFORM_ID, Inject } from '@angular/core';
 
 @Injectable({
   providedIn: 'root',
@@ -8,8 +10,13 @@ export class FavoriteService {
   private favoriteRecipesKey = 'favoriteRecipes';
   private favoritesSubject = new BehaviorSubject<string[]>(this.getFavorites());
 
+  constructor(@Inject(PLATFORM_ID) private platformId: Object) {}
+
   getFavorites(): string[] {
-    return JSON.parse(localStorage.getItem(this.favoriteRecipesKey) || '[]');
+    if (isPlatformBrowser(this.platformId)) {
+      return JSON.parse(localStorage.getItem(this.favoriteRecipesKey) || '[]');
+    }
+    return []; // Return an empty array when not in the browser (SSR)
   }
 
   isFavorite(recipeId: string): boolean {
@@ -26,7 +33,9 @@ export class FavoriteService {
       favorites.push(recipeId);
     }
 
-    localStorage.setItem(this.favoriteRecipesKey, JSON.stringify(favorites));
+    if (isPlatformBrowser(this.platformId)) {
+      localStorage.setItem(this.favoriteRecipesKey, JSON.stringify(favorites));
+    }
     this.favoritesSubject.next(favorites);
   }
 

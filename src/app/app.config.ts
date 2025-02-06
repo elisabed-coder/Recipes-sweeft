@@ -22,9 +22,5 @@ export const appConfig: ApplicationConfig = {
     provideAnimationsAsync(),
     provideAnimations(),
     provideHttpClient(),
-    {
-      provide: ErrorHandler,
-      useClass: ErrorHandler,
-    },
   ],
 };
