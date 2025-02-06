@@ -113,7 +113,7 @@ export class RecipesComponent {
               });
             },
             error: (error) => {
-              this.snackBar.open('Failed to delete recipe', 'Close', {
+              this.snackBar.open(error, 'Close', {
                 duration: 3000,
               });
             },

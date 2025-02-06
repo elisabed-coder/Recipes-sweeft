@@ -70,7 +70,7 @@
         alt="Recipe Image"
         loading="eager"
       />
-      <mat-card-actions>
+      <div>
         <button mat-button (click)="getRecipeDetails(recipe.id)">
           SEE DETAIlS
         </button>
@@ -78,7 +78,9 @@
         <button mat-button (click)="OnEditRecipeClicked(recipe.id)">
           EDIT
         </button>
-      </mat-card-actions>
+        <i class="material-icons">delete</i>
+        <i class="material-icons">edit_note</i>
+      </div>
     </mat-card>
     }
   </div>
