@@ -1,10 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import {
-  ChangeDetectionStrategy,
-  ChangeDetectorRef,
-  Component,
-  inject,
-} from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { Recipe } from '../Models/recipe';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
@@ -20,6 +15,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatProgressSpinner } from '@angular/material/progress-spinner';
 import { RecipeFilterService } from '../Services/recipe-filter.service';
+import { ErrorHandlingService } from '../Services/error-handling.service';
 
 @Component({
   selector: 'app-recipes',
@@ -37,35 +33,35 @@ import { RecipeFilterService } from '../Services/recipe-filter.service';
   styleUrl: './recipes.component.scss',
 })
 export class RecipesComponent {
-  recipes: Recipe[] = [];
-  filteredRecipes: Recipe[] = [];
-  showOnlyFavorites: boolean = false;
+  recipes: Recipe[] = []; // List of recipes
+  filteredRecipes: Recipe[] = []; // Filtered recipes based on search and favorite status
+  showOnlyFavorites: boolean = false; // Flag to show only favorite recipes
 
-  // Inject dependencies
-  http = inject(HttpClient);
-  readonly dialog = inject(MatDialog);
-  readonly snackBar = inject(MatSnackBar);
+  http = inject(HttpClient); // Inject HttpClient for HTTP requests
+  readonly dialog = inject(MatDialog); // Inject MatDialog for dialogs
+  readonly snackBar = inject(MatSnackBar); // Inject MatSnackBar for notifications
 
-  currentRecipeId!: string;
-  selectedRecipe!: Recipe;
-  showCreateRecipeForm: boolean = false;
+  currentRecipeId!: string; // Stores the current selected recipe ID
+  selectedRecipe!: Recipe; // Stores the selected recipe
+  showCreateRecipeForm: boolean = false; // Flag to show the create/update form
 
-  searchTerm: string = '';
+  searchTerm: string = ''; // Search term for filtering recipes
 
-  isLoading: boolean = false;
-  editMode: boolean = false;
+  isLoading: boolean = false; // Loading state
+  editMode: boolean = false; // Flag to toggle edit mode for recipes
 
   constructor(
     private router: Router,
     private recipeService: RecipeService,
     private favoriteService: FavoriteService,
-    private recipeFilterService: RecipeFilterService
+    private recipeFilterService: RecipeFilterService,
+    private errorHandler: ErrorHandlingService
   ) {}
 
   ngOnInit(): void {
-    this.fetchRecipes();
+    this.fetchRecipes(); // Fetch recipes on initialization
 
-    // Track favorite changes
+    // Track favorite changes and apply the filter
     this.favoriteService.getFavoritesObservable().subscribe(() => {
       this.applyFavoriteFilter();
     });
@@ -78,11 +74,11 @@ export class RecipesComponent {
       next: (recipes) => {
         this.isLoading = false;
         this.recipes = recipes;
-        this.applyFilters();
+        this.applyFilters(); // Apply filters after fetching recipes
       },
       error: (err) => {
         this.isLoading = false;
-        this.snackBar.open(err, 'Close', { duration: 3000 });
+        this.errorHandler.handleError(err);
       },
     });
   }
@@ -93,7 +89,7 @@ export class RecipesComponent {
       this.currentRecipeId = id;
       this.selectedRecipe =
         this.recipes.find((recipe) => recipe.id === id) ?? ({} as Recipe);
-      this.router.navigate(['recipe', id]);
+      this.router.navigate(['recipe', id]); // Navigate to recipe details
     }
   }
 
@@ -107,15 +103,13 @@ export class RecipesComponent {
           this.recipeService.deleteRecipeById(id).subscribe({
             next: () => {
               this.recipes = this.recipes.filter((recipe) => recipe.id !== id);
-              this.applyFavoriteFilter();
+              this.applyFavoriteFilter(); // Reapply favorite filter after deletion
               this.snackBar.open('Recipe deleted successfully', 'Close', {
                 duration: 3000,
               });
             },
             error: (error) => {
-              this.snackBar.open(error, 'Close', {
-                duration: 3000,
-              });
+              this.errorHandler.handleError(error);
             },
           });
         }
@@ -126,7 +120,7 @@ export class RecipesComponent {
   // Handle recipe create/update actions
   CreateOrUpdateRecipe(recipe: Recipe) {
     this.showCreateRecipeForm = false;
-    this.fetchRecipes();
+    this.fetchRecipes(); // Re-fetch recipes after creation or update
   }
 
   // Show form for editing a recipe
@@ -135,7 +129,7 @@ export class RecipesComponent {
       this.selectedRecipe =
         this.recipes.find((recipe) => recipe.id === id) || ({} as Recipe);
       this.showCreateRecipeForm = true;
-      this.editMode = true;
+      this.editMode = true; // Set edit mode to true
     }
   }
 
@@ -160,7 +154,7 @@ export class RecipesComponent {
   // Switch between showing all or only favorite recipes
   toggleFavoriteFilter() {
     this.showOnlyFavorites = !this.showOnlyFavorites;
-    this.applyFavoriteFilter();
+    this.applyFavoriteFilter(); // Reapply the favorite filter
   }
 
   private applyFavoriteFilter() {
@@ -185,13 +179,13 @@ export class RecipesComponent {
     this.filteredRecipes = this.recipeFilterService.filterRecipes(
       tempRecipes,
       this.searchTerm
-    );
+    ); // Apply search filter
   }
 
   // Filter input change handling
   onSearchChange(event: any) {
     this.searchTerm = event.target.value;
-    this.applyFilters();
+    this.applyFilters(); // Reapply filters on search input change
   }
 
   // Generate random color for background

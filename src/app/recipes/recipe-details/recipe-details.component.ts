@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { Component } from '@angular/core';
 import { Recipe } from '../../Models/recipe';
 import { ActivatedRoute } from '@angular/router';
 import { RecipeService } from '../../Services/recipes.service';
@@ -9,6 +9,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { FavoriteService } from '../../Services/favorite.service';
 import { MatIcon } from '@angular/material/icon';
 import { Router } from '@angular/router';
+import { ErrorHandlingService } from '../../Services/error-handling.service';
 
 @Component({
   selector: 'app-recipe-details',
@@ -23,19 +24,21 @@ import { Router } from '@angular/router';
   styleUrls: ['./recipe-details.component.scss'],
 })
 export class RecipeDetailsComponent {
-  recipeId!: string | null;
-  recipe!: Recipe;
-  favoriteStatus: boolean = false;
+  recipeId!: string | null; // stores the recipe ID from the route
+  recipe!: Recipe; // stores the recipe details
+  favoriteStatus: boolean = false; // tracks if the recipe is a favorite
 
   constructor(
     private route: ActivatedRoute,
     private recipeService: RecipeService,
     private snackBar: MatSnackBar,
     private favoriteService: FavoriteService,
-    private router: Router
+    private router: Router,
+    private errorHandler: ErrorHandlingService
   ) {}
 
   ngOnInit(): void {
+    // fetch recipe ID from the route and get recipe details
     this.route.paramMap.subscribe((params) => {
       this.recipeId = params.get('id');
       if (this.recipeId) {
@@ -49,12 +52,10 @@ export class RecipeDetailsComponent {
             }
           },
           error: (err) => {
-            const errorMessage =
-              err.message || 'An error occurred while fetching recipe details';
-            this.snackBar.open(errorMessage, 'Close', {
-              duration: 5000,
-              panelClass: ['error-snackbar'],
-            });
+            // handle error and show a snackbar
+            return this.errorHandler.handleError(
+              'An error occurred while fetching recipe details'
+            );
           },
         });
       }
@@ -62,16 +63,19 @@ export class RecipeDetailsComponent {
   }
 
   isFavorite(recipeId: string | undefined): boolean {
+    // check if the recipe is a favorite
     return recipeId ? this.favoriteService.isFavorite(recipeId) : false;
   }
 
   toggleFavorite(recipe: Recipe) {
+    // toggle the favorite status of the recipe
     if (recipe.id) {
       this.favoriteService.toggleFavorite(recipe.id);
     }
   }
 
   goBack() {
+    // navigate back to the recipes list
     this.router.navigate(['/recipes']);
   }
 }

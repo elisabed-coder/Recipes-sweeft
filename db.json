@@ -4,18 +4,47 @@
       "title": "Pepperoni",
       "instructions": "You want to make sure that the salt and the spices are mixed well with the meat and distributed evenly. One way to ensure even seasoning distribution is to mix them with the pieces of meat before they are ground. This is my favorite method and it works very well.",
       "ingredients": [
-        "asdasd",
-        "kjbkjnk"
+        "Pepperoni slices",
+        "Mozzarella cheese",
+        "Pizza dough",
+        "Tomato sauce"
       ],
       "thumbnail": "http://localhost:3001/uploads/pizza.jpg",
       "id": "167e"
     },
     {
-      "id": "36ea",
       "title": "Capricozza",
-      "instructions": " nklnknjkn k ",
+      "instructions": "nklnknjkn k",
       "ingredients": [
-        "njknln"
+        "Olives",
+        "Tomato sauce"
+      ],
+      "thumbnail": "http://localhost:3001/uploads/pizza.jpg",
+      "id": "36ea"
+    },
+    {
+      "title": "Vegetarian",
+      "instructions": "Top the pizza dough with tomato sauce, various vegetables, and cheese, then bake to perfection.",
+      "ingredients": [
+        "Bell peppers",
+        "Onions",
+        "Olives",
+        "Mushrooms",
+        "Tomato sauce",
+        "Mozzarella cheese"
+      ],
+      "thumbnail": "http://localhost:3001/uploads/carbonara.jpg",
+      "id": "78cd"
+    },
+    {
+      "id": "82ef",
+      "title": "BBQ Chicken",
+      "instructions": "Mix the BBQ sauce with the chicken, spread on the dough, add cheese and onions, then bake.",
+      "ingredients": [
+        "Chicken breast",
+        "BBQ sauce",
+        "Red onions",
+        "Mozzarella cheese"
       ],
       "thumbnail": "http://localhost:3001/uploads/pizza.jpg"
     }

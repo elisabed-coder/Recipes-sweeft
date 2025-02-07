@@ -1,8 +1,9 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { ErrorHandler, Injectable } from '@angular/core';
 import { Observable, BehaviorSubject, catchError, throwError } from 'rxjs';
 import { Recipe } from '../Models/recipe';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { ErrorHandlingService } from './error-handling.service';
 
 @Injectable({
   providedIn: 'root',
@@ -12,16 +13,16 @@ export class RecipeService {
   private recipesSubject = new BehaviorSubject<Recipe[]>([]);
   recipes$ = this.recipesSubject.asObservable();
 
-  constructor(private http: HttpClient, private snackBar: MatSnackBar) {}
+  constructor(
+    private http: HttpClient,
+    private snackBar: MatSnackBar,
+    private errorHandler: ErrorHandlingService
+  ) {}
 
   getRecipes(): Observable<Recipe[]> {
     return this.http.get<Recipe[]>(this.apiUrl).pipe(
       catchError((error) => {
-        this.snackBar.open('Error fetching recipes!', 'Close', {
-          duration: 3000,
-          panelClass: ['error-snackbar'], // Optional styling
-        });
-        return throwError(() => error);
+        return this.errorHandler.handleError(error);
       })
     );
   }
@@ -29,11 +30,7 @@ export class RecipeService {
   getRecipeById(id: string): Observable<Recipe> {
     return this.http.get<Recipe>(`${this.apiUrl}/${id}`).pipe(
       catchError((error) => {
-        this.snackBar.open(`Error fetching recipe ${id}`, 'Close', {
-          duration: 3000,
-          panelClass: ['error-snackbar'],
-        });
-        return throwError(() => error);
+        return this.errorHandler.handleError(`Error fetching recipe ${id}`);
       })
     );
   }
@@ -41,11 +38,7 @@ export class RecipeService {
   createNewRecipe(recipeData: Recipe): Observable<Recipe> {
     return this.http.post<Recipe>(this.apiUrl, recipeData).pipe(
       catchError((error) => {
-        this.snackBar.open('Error creating recipe!', 'Close', {
-          duration: 3000,
-          panelClass: ['error-snackbar'],
-        });
-        return throwError(() => error);
+        return this.errorHandler.handleError('Error creating recipe!');
       })
     );
   }
@@ -53,11 +46,7 @@ export class RecipeService {
   deleteRecipeById(recipeId: string): Observable<void> {
     return this.http.delete<void>(`${this.apiUrl}/${recipeId}`).pipe(
       catchError((error) => {
-        this.snackBar.open('Error deleting recipe!', 'Close', {
-          duration: 3000,
-          panelClass: ['error-snackbar'],
-        });
-        return throwError(() => error);
+        return this.errorHandler.handleError('Error deleting recipe!');
       })
     );
   }
@@ -65,11 +54,7 @@ export class RecipeService {
   updateRecipe(id: string, data: Recipe): Observable<Recipe> {
     return this.http.put<Recipe>(`${this.apiUrl}/${id}`, data).pipe(
       catchError((error) => {
-        this.snackBar.open('Error updating recipe!', 'Close', {
-          duration: 3000,
-          panelClass: ['error-snackbar'],
-        });
-        return throwError(() => error);
+        return this.errorHandler.handleError('Error updating recipe!');
       })
     );
   }
