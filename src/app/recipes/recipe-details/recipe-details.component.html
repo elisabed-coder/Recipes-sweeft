@@ -1,11 +1,8 @@
 <section>
   <div *ngIf="recipe">
-    <h1>{{ recipe.title }}</h1>
-    <mat-card class="example-card" appearance="outlined">
+    <mat-card class="example-card grow" appearance="outlined">
       <mat-card-header>
-        <div mat-card-avatar class="example-header-image"></div>
-        <mat-card-title>{{ recipe.title }}</mat-card-title>
-        <mat-card-subtitle>Recipe</mat-card-subtitle>
+        <h2>{{ recipe.title }}</h2>
       </mat-card-header>
       <img mat-card-image [src]="recipe.thumbnail" [alt]="recipe.title" />
       <mat-card-content>
@@ -19,7 +16,11 @@
         <p>{{ recipe.instructions }}</p>
       </mat-card-content>
       <mat-card-actions>
-        <button mat-icon-button (click)="toggleFavorite(recipe)">
+        <button
+          mat-icon-button
+          (click)="toggleFavorite(recipe)"
+          class="animated-icon"
+        >
           <mat-icon [class.favorite]="isFavorite(recipe.id)">
             {{ isFavorite(recipe.id) ? "favorite" : "favorite_border" }}
           </mat-icon>

@@ -4,7 +4,7 @@
       {{ isEditMode ? "Update Recipe" : "Add New Recipe" }}
     </h2>
     <form [formGroup]="recipeForm">
-      <mat-form-field appearance="outline" class="full-width">
+      <mat-form-field appearance="outline">
         <mat-label>Recipe Title</mat-label>
         <input matInput formControlName="title" required />
         <mat-error *ngIf="recipeForm.get('title')">
@@ -12,6 +12,7 @@
         </mat-error>
       </mat-form-field>
 
+      <mat-label>Please upload image</mat-label>
       <div class="image-upload-container" *ngIf="!isEditMode">
         <input
           #imageInput
@@ -77,7 +78,6 @@
       </div>
 
       <div formArrayName="ingredients" class="ingredients-list">
-        <h3>Ingredients</h3>
         <div
           *ngFor="let ingredient of ingredients.controls; let i = index"
           class="ingredient-row"

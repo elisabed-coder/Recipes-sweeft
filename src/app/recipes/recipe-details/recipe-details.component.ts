@@ -3,7 +3,7 @@ import { Recipe } from '../../Models/recipe';
 import { ActivatedRoute } from '@angular/router';
 import { RecipeService } from '../../Services/recipes.service';
 import { MatButtonModule } from '@angular/material/button';
-import { MatCardModule } from '@angular/material/card';
+import { MatCardImage, MatCardModule } from '@angular/material/card';
 import { CommonModule } from '@angular/common';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { FavoriteService } from '../../Services/favorite.service';
@@ -11,7 +11,13 @@ import { MatIcon } from '@angular/material/icon';
 
 @Component({
   selector: 'app-recipe-details',
-  imports: [MatCardModule, MatButtonModule, CommonModule, MatIcon],
+  imports: [
+    MatCardModule,
+    MatButtonModule,
+    CommonModule,
+    MatIcon,
+    MatCardImage,
+  ],
   templateUrl: './recipe-details.component.html',
   styleUrls: ['./recipe-details.component.scss'],
 })

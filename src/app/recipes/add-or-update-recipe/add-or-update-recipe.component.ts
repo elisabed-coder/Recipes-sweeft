@@ -85,6 +85,9 @@ export class AddOrUpdateRecipeComponent {
         instructions: this.selectedRecipe.instructions,
         thumbnail: this.selectedRecipe.thumbnail,
       });
+
+      this.ingredients.clear();
+
       this.selectedRecipe.ingredients.forEach((ingredient: string) => {
         this.ingredients.push(
           this.fb.control(ingredient, [
@@ -98,9 +101,6 @@ export class AddOrUpdateRecipeComponent {
           this.selectedRecipe.thumbnail,
           new File([], 'placeholder')
         );
-      }
-      if (this.ingredients.length === 0) {
-        this.addIngredient();
       }
     }
   }

@@ -2,17 +2,19 @@
   "recipes": [
     {
       "title": "Carbonara",
-      "instructions": "scsdzxcdvx",
+      "instructions": "You should boil spaghetti and addd Tomato",
       "ingredients": [
-        "asdasd"
+        "Spaghetti",
+        "tomato"
       ],
       "thumbnail": "http://localhost:3001/uploads/carbonara.jpg",
       "id": "22ec"
     },
     {
       "title": "Pepperoni",
-      "instructions": " bkbkjnjknlk",
+      "instructions": " bkbkjnjknlksdasd",
       "ingredients": [
+        "asdasd",
         "kjbkjnk"
       ],
       "thumbnail": "http://localhost:3001/uploads/pizza.jpg",
