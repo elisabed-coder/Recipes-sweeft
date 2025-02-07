@@ -5,7 +5,10 @@
   width: 120px;
   height: 120px;
   animation: spin 2s linear infinite;
-  margin: 0 auto;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
 
 @keyframes spin {

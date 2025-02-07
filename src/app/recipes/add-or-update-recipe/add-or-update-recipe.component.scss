@@ -35,6 +35,9 @@
       overflow-x: hidden;
       .mat-mdc-form-field {
         width: 100% !important;
+        &:first-of-type {
+          margin-top: 1rem !important;
+        }
       }
     }
   }

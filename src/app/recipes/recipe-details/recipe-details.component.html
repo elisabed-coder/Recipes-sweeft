@@ -1,17 +1,16 @@
 <section>
   <div *ngIf="recipe">
     <mat-card class="example-card grow" appearance="outlined">
+      <button mat-button class="go-back" (click)="goBack()">Go Back</button>
       <mat-card-header>
         <h2>{{ recipe.title }}</h2>
       </mat-card-header>
       <img mat-card-image [src]="recipe.thumbnail" [alt]="recipe.title" />
       <mat-card-content>
         <h3>Ingredients:</h3>
-        <ul>
-          <li *ngFor="let ingredient of recipe.ingredients">
-            {{ ingredient }}
-          </li>
-        </ul>
+        <span *ngFor="let ingredient of recipe.ingredients">
+          {{ ingredient }}
+        </span>
         <h3>Instructions:</h3>
         <p>{{ recipe.instructions }}</p>
       </mat-card-content>

@@ -8,6 +8,7 @@ import { CommonModule } from '@angular/common';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { FavoriteService } from '../../Services/favorite.service';
 import { MatIcon } from '@angular/material/icon';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-recipe-details',
@@ -30,7 +31,8 @@ export class RecipeDetailsComponent {
     private route: ActivatedRoute,
     private recipeService: RecipeService,
     private snackBar: MatSnackBar,
-    private favoriteService: FavoriteService
+    private favoriteService: FavoriteService,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
@@ -67,5 +69,9 @@ export class RecipeDetailsComponent {
     if (recipe.id) {
       this.favoriteService.toggleFavorite(recipe.id);
     }
+  }
+
+  goBack() {
+    this.router.navigate(['/recipes']);
   }
 }

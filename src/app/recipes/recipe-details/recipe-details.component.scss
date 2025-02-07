@@ -1,6 +1,4 @@
 section {
-  display: flex;
-  justify-content: center;
   min-height: 78vh;
   width: 100%;
 }
@@ -8,7 +6,14 @@ section {
 .example-card {
   background: rgb(3, 8, 31);
   color: #ffff !important;
-  width: 100%;
+  width: 80%;
+  margin: 0 auto;
+  position: relative;
+  .go-back {
+    position: absolute;
+    right: 0;
+    top: 1rem;
+  }
   h3 {
     margin-top: 1rem;
   }
