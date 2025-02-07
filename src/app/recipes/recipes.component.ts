@@ -12,7 +12,7 @@ import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { RecipeService } from '../Services/recipes.service';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
-import { AddReceipeComponent } from './add-receipe/add-receipe.component';
+import { AddOrUpdateRecipeComponent } from './add-or-update-recipe/add-or-update-recipe.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { ConfirmDeleteComponent } from '../utility/confirm-delete/confirm-delete.component';
 import { FavoriteService } from '../Services/favorite.service';
@@ -29,9 +29,9 @@ import { RecipeFilterService } from '../Services/recipe-filter.service';
     CommonModule,
     ReactiveFormsModule,
     MatDialogModule,
-    AddReceipeComponent,
     MatIconModule,
     MatProgressSpinner,
+    AddOrUpdateRecipeComponent,
   ],
   templateUrl: './recipes.component.html',
   styleUrl: './recipes.component.scss',

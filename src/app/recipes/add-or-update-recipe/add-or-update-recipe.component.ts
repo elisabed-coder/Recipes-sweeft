@@ -18,10 +18,10 @@ import { ImageService } from '../../Services/image.service';
 import { ImageSnippet } from '../../Models/ImageSnipper';
 import { FormValidationService } from '../../Services/formValidation.service';
 import { Recipe } from '../../Models/recipe';
-import { MatSnackBar } from '@angular/material/snack-bar'; // Import MatSnackBar
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
-  selector: 'app-add-receipe',
+  selector: 'app-add-or-update-recipe',
   standalone: true,
   imports: [
     CommonModule,
@@ -33,10 +33,10 @@ import { MatSnackBar } from '@angular/material/snack-bar'; // Import MatSnackBar
     MatIconModule,
   ],
   providers: [FormBuilder],
-  templateUrl: './add-receipe.component.html',
-  styleUrls: ['./add-receipe.component.scss'],
+  templateUrl: './add-or-update-recipe.component.html',
+  styleUrls: ['./add-or-update-recipe.component.scss'],
 })
-export class AddReceipeComponent {
+export class AddOrUpdateRecipeComponent {
   recipeForm: FormGroup;
   selectedFile!: ImageSnippet;
 

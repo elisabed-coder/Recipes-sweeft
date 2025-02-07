@@ -1,11 +1,11 @@
 <section>
-  <app-add-receipe
+  <app-add-or-update-recipe
     *ngIf="showCreateRecipeForm"
     (EmitTaskData)="CreateOrUpdateRecipe($event)"
     (cancel)="onCancel()"
     [isEditMode]="editMode"
     [selectedRecipe]="selectedRecipe"
-  ></app-add-receipe>
+  ></app-add-or-update-recipe>
 
   <div *ngIf="isLoading" class="loader-container">
     <mat-progress-spinner
