@@ -4,37 +4,42 @@ section {
   @media (min-width: 980px) {
     padding: 5rem;
   }
+
+  .container {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 2rem;
+    margin-top: 2rem;
+  }
 }
 
-.container {
-  display: flex;
-  justify-content: center;
-  flex-wrap: wrap;
-  gap: 2rem;
-  margin-top: 2rem;
-}
+//filter container styles
 
 .filter-container {
   display: flex;
   justify-content: space-between;
   flex-wrap: wrap;
+  gap: 1rem;
+
   .filter-box {
     display: flex;
     flex-direction: column;
   }
   .search-container {
-    background-color: white;
+    background-color: rgb(17, 18, 18);
     box-shadow: 0 7px 29px 0 rgba(100, 100, 111, 0.2);
+    color: white;
     border-radius: 4px;
     transition: all 1s ease-in-out;
     height: 50px;
     position: relative;
+    margin-bottom: 0.8rem;
     .search-icon {
       position: absolute;
       left: 1rem;
       top: 50%;
       transform: translateY(-50%);
-      color: #858585;
     }
     input {
       width: 100%;
@@ -42,14 +47,16 @@ section {
       padding: 10px 20px 10px 40px;
       font-size: 14px;
       font-weight: 600;
-      color: #858585;
-      background-color: white;
+      background: #111;
+      color: white;
       border: none;
-      border-radius: 4px;
+      border-radius: 10px;
       outline: none;
     }
   }
 }
+
+//card styles
 
 .example-card {
   padding: 20px;
@@ -70,7 +77,7 @@ section {
   &:hover {
     box-shadow: 0 0 40px #ffff00 !important;
 
-    h3,
+    h2,
     .animated-icon {
       color: #ffff00;
       -webkit-transform: scale(1.05);
@@ -78,9 +85,9 @@ section {
     }
   }
 
-  h3,
+  h2,
   .animated-icon {
-    font-size: 1.2rem;
+    font-size: 1.4rem;
     font-weight: normal;
     color: #fff;
     letter-spacing: 3px;
@@ -118,8 +125,8 @@ section {
   }
 }
 
-//animated button
-.animated-button {
+//add new recipe animated button style
+.animated button .animated-button {
   display: inline-block;
   outline: none;
   cursor: pointer;
@@ -139,13 +146,13 @@ section {
   color: #fff;
   background-color: #1ed760;
   height: 48px;
+
   :hover {
     transform: scale(1.04);
     background-color: #21e065;
   }
 }
 
-//add new recipe buton style
 .glow-on-hover {
   width: 220px;
   height: 50px;
@@ -158,6 +165,7 @@ section {
   z-index: 0;
   border-radius: 10px;
   font-size: 18px;
+  background: rgb(31, 90, 149);
 
   &:before {
     content: "";
@@ -222,4 +230,28 @@ section {
   100% {
     background-position: 0 0;
   }
+}
+
+.mat-mdc-button {
+  color: white !important;
+  span {
+    &:hover {
+      background-color: none !important;
+    }
+  }
+}
+::ng-deep .mdc-button:hover {
+  background-color: none !important;
+}
+
+::ng-deep .mat-mdc-button.mat-mdc-button-base:hover {
+  background-color: none !important;
+}
+
+.mdc-button:hover {
+  background-color: none !important;
+}
+
+.mat-mdc-button.mat-mdc-button-base:hover {
+  background-color: none !important;
 }

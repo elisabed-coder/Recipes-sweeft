@@ -51,8 +51,7 @@
       [ngStyle]="setBackgroundStyle()"
     >
       <div>
-        <div mat-card-avatar class="example-header-image"></div>
-        <h3>{{ recipe.title }}</h3>
+        <h2>{{ recipe.title }}</h2>
         <button
           mat-icon-button
           (click)="toggleFavorite(recipe)"
@@ -78,8 +77,6 @@
         <button mat-button (click)="OnEditRecipeClicked(recipe.id)">
           EDIT
         </button>
-        <i class="material-icons">delete</i>
-        <i class="material-icons">edit_note</i>
       </div>
     </mat-card>
     }
