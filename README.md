@@ -57,3 +57,21 @@ Angular CLI does not come with an end-to-end testing framework by default. You c
 ## Additional Resources
 
 For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+
+## Running the Project Locally
+
+### 1. Start the Image Server
+
+The image server serves image files locally for the project.
+
+1. Navigate to the `image-server` directory:
+
+   cd image-server
+
+2. Start the image server:
+   node server.js
+
+### The JSON server provides a mock backend for the app, simulating a REST API using db.json as the database.
+
+1. start the json server
+   npx json-server --watch db.json --port 3000
