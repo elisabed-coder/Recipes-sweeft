@@ -1,5 +1,5 @@
 footer {
-  position: fixed;
+  position: relative;
   bottom: 0;
   left: 0;
   right: 0;
@@ -8,8 +8,4 @@ footer {
   color: white;
   padding: 2rem;
   box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
-  .fa-i {
-    color: white !important;
-    background-color: white !important;
-  }
 }

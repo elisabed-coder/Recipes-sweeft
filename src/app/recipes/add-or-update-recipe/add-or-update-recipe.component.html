@@ -85,8 +85,13 @@
           <mat-form-field appearance="outline" class="ingredient-input">
             <mat-label>Ingredient {{ i + 1 }}</mat-label>
             <input matInput [formControlName]="i" required />
-            <mat-error *ngIf="ingredient">
-              {{ getErrorMessage(ingredient) }}
+            <mat-error *ngIf="submitted && ingredient.invalid">
+              <ng-container *ngIf="ingredient.hasError('required')"
+                >Ingredient is required.</ng-container
+              >
+              <ng-container *ngIf="ingredient.hasError('minlength')">
+                Ingredient must be at least 2 characters long.
+              </ng-container>
             </mat-error>
           </mat-form-field>
           <button
@@ -98,6 +103,12 @@
             <mat-icon>delete</mat-icon>
           </button>
         </div>
+
+        <!-- No ingredients error -->
+        <mat-error *ngIf="submitted && ingredients.length === 0">
+          At least one ingredient is required.
+        </mat-error>
+
         <button
           mat-button
           type="button"

@@ -8,6 +8,7 @@ import {
   FormsModule,
   FormArray,
   AbstractControl,
+  FormControl,
 } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -39,6 +40,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 export class AddOrUpdateRecipeComponent {
   recipeForm: FormGroup;
   selectedFile!: ImageSnippet;
+  submitted: boolean = false;
 
   @Input() isEditMode: boolean = false;
   @Input() selectedRecipe!: any;
@@ -70,7 +72,9 @@ export class AddOrUpdateRecipeComponent {
           Validators.maxLength(1000),
         ],
       ],
-      ingredients: this.fb.array([]),
+      ingredients: this.fb.array([
+        new FormControl('', [Validators.required, Validators.minLength(2)]),
+      ]),
     });
   }
 
@@ -101,17 +105,13 @@ export class AddOrUpdateRecipeComponent {
     }
   }
 
-  get ingredients() {
+  get ingredients(): FormArray {
     return this.recipeForm.get('ingredients') as FormArray;
   }
 
   addIngredient() {
     this.ingredients.push(
-      this.fb.control('', [
-        Validators.required,
-        Validators.minLength(2),
-        Validators.maxLength(100),
-      ])
+      this.fb.control('', [Validators.required, Validators.minLength(2)])
     );
   }
 
@@ -126,7 +126,8 @@ export class AddOrUpdateRecipeComponent {
   }
 
   submitForm() {
-    if (this.recipeForm.invalid) {
+    this.submitted = true;
+    if (this.recipeForm.invalid || this.ingredients.length === 0) {
       this.formValidationService.markFormGroupTouched(this.recipeForm);
       return;
     }

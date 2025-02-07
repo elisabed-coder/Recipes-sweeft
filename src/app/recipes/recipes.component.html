@@ -7,16 +7,6 @@
     [selectedRecipe]="selectedRecipe"
   ></app-add-or-update-recipe>
 
-  <div *ngIf="isLoading" class="loader-container">
-    <mat-progress-spinner
-      mode="indeterminate"
-      diameter="50"
-    ></mat-progress-spinner>
-  </div>
-
-  <div *ngIf="!isLoading && recipes.length < 1">
-    <h2>No recipes has been created yet!</h2>
-  </div>
   <div class="filter-container">
     <button
       (click)="showCreateRecipeForm = true; editMode = false"
@@ -36,11 +26,21 @@
         />
         <div class="search"></div>
       </div>
-
       <button mat-button (click)="toggleFavoriteFilter()">
         {{ showOnlyFavorites ? "Show All Recipes" : "Show Favorites" }}
       </button>
     </div>
+  </div>
+
+  <div *ngIf="isLoading" class="ng-content">
+    <mat-progress-spinner
+      mode="indeterminate"
+      diameter="50"
+    ></mat-progress-spinner>
+  </div>
+
+  <div *ngIf="!isLoading && recipes.length < 1" class="ng-content">
+    <h2>No recipes has been created yet!</h2>
   </div>
 
   <div class="container" *ngIf="!isLoading && filteredRecipes">

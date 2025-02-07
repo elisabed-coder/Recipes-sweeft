@@ -62,8 +62,4 @@ export class RecipeDetailsComponent {
       this.favoriteService.toggleFavorite(recipe.id);
     }
   }
-
-  updateRecipe() {
-    console.log('updated');
-  }
 }
